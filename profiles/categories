@@ -1,6 +1,4 @@
-app-dicts
 app-emulation
-app-office
 dev-lisp
 dev-perl
 dev-tex
@@ -11,5 +9,5 @@ media-fonts
 media-libs
 media-sound
 net-p2p
-www-client
+sys-devel
 x11-libs
