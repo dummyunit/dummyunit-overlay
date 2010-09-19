@@ -1,0 +1,25 @@
+--- wine-1.1.24/dlls/wined3d/device.c
++++ wine-1.1.24/dlls/wined3d/device.c
+@@ -5865,8 +5865,7 @@
+             }
+             else
+             {
+-                GL_EXTCALL(glCompressedTexImage2DARB(glDescription->target, glDescription->level,
+-                        dst_format_desc->glInternal, srcWidth, srcHeight, 0, destSize, data));
++                FIXME("S3TC support dropped\n");
+             }
+         }
+         else
+--- wine-1.1.24/dlls/wined3d/directx.c
++++ wine-1.1.24/dlls/wined3d/directx.c
+@@ -2396,10 +2396,6 @@
+         case WINED3DFMT_DXT3:
+         case WINED3DFMT_DXT4:
+         case WINED3DFMT_DXT5:
+-            if (GL_SUPPORT(EXT_TEXTURE_COMPRESSION_S3TC)) {
+-                TRACE_(d3d_caps)("[OK]\n");
+-                return TRUE;
+-            }
+             TRACE_(d3d_caps)("[FAILED]\n");
+             return FALSE;
+

@@ -1,0 +1,2 @@
+DIST stardict-dictd_www.mova.org_slovnyk_en-uk-2.4.2.tar.bz2 1400442 RMD160 aaa4a05d048f2650d00c5a361b419d67193e988b SHA1 fa3051addfa4fe8021215acfa835d0a37f5b384c SHA256 7d67a528215945acc15b4297d26e0168e7383ba7cf8a767d84e6794094dd80ba
+EBUILD stardict-slovnyk-en-uk-2.4.2.ebuild 353 RMD160 e9ec7b75faa2baa5e82c5d5593c0d261f7158a2b SHA1 d941ff27e3b0c00b17a0ead27b780e0ebb06bcef SHA256 93f9dc5f748deb4d9df4bbf6a7ead479c6e1cf8f438a5ea3cb4f6b1e8eb3a1f8

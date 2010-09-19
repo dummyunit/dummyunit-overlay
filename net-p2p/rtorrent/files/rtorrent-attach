@@ -1,0 +1,8 @@
+#!/bin/sh
+SOCKET=$(. /etc/conf.d/rtorrentd; echo $SOCKET)
+if [ -z $SOCKET ]; then
+	echo "SOCKET unset, please edit /etc/conf.d/rtorrentd first"
+	exit 1
+fi
+
+dtach -a $SOCKET -e ^q

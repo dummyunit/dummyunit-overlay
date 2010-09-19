@@ -1,0 +1,62 @@
+#!/sbin/runscript
+# Copyright 2008-2010 Stanislav Cymbalov
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+depend() {
+	need net
+}
+
+checkconfig() {
+	if [ -z ${USER} ]; then
+		eerror "USER unset, please edit /etc/conf.d/rtorrent first"
+		return 1
+	fi
+
+	if [ -z ${SOCKET} ]; then
+		eerror "SOCKET unset, please edit /etc/conf.d/rtorrent first"
+		return 1
+	fi
+
+	if [ -z ${USED_TERM} ]; then
+		USED_TERM="linux"
+	fi
+
+	return 0
+}
+
+start() {
+	ebegin "Starting rtorrentd"
+
+	checkconfig || return 1
+
+	pids=$(pidof -x rtorrent)
+
+	HOME=/home/${USER} \
+	TERM=${USED_TERM} \
+	start-stop-daemon --start \
+	--chuid ${USER} \
+	--exec /usr/bin/dtach -- -n ${SOCKET} /usr/bin/rtorrent
+	
+	if [ $? -eq 0 ]; then
+		echo $pids $(pidof -x rtorrent) | tr [:blank:] \\n | sort | uniq --unique > /var/run/rtorrentd.pid
+		chmod g+rw ${SOCKET} > /dev/null
+		eend 0
+	else
+		eend 1
+	fi
+}
+
+stop() {
+	if [ -z ${TERM_TIMEOUT} -o ${TERM_TIMEOUT} -le 0 ]; then
+		TERM_TIMEOUT=10
+	fi
+
+	ebegin "Stopping rtorrentd"
+	start-stop-daemon --stop --retry -2/${TERM_TIMEOUT} --pidfile /var/run/rtorrentd.pid
+	if [ $? -ne 0 ]; then
+		ewarn "Timeout reached! Sending KILL signal."
+		start-stop-daemon --stop --signal KILL --pidfile /var/run/rtorrentd.pid
+	fi		
+	eend $?
+} 
