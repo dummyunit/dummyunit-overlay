@@ -30,6 +30,4 @@ src_install() {
 	cmake-utils_src_install
 
 	dodoc WISHLIST.txt
-	insinto /usr/share/${PN}/
-	doins -r icons/ lang/
 }
