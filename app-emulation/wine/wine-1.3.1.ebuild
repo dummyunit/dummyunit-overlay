@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-emulation/wine/wine-1.3.1.ebuild,v 1.1 2010/08/30 05:20:28 vapier Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-emulation/wine/wine-1.3.1.ebuild,v 1.3 2010/09/21 21:54:18 vapier Exp $
 
 EAPI="2"
 
@@ -97,8 +97,9 @@ DEPEND="${RDEPEND}
 	sys-devel/flex"
 
 src_unpack() {
-	if [[ $(( $(gcc-major-version) * 100 + $(gcc-minor-version) )) -lt 404 ]] ; then
-		use win64 && die "you need gcc-4.4+ to build 64bit wine"
+	if use win64 ; then
+		[[ $(( $(gcc-major-version) * 100 + $(gcc-minor-version) )) -lt 404 ]] \
+			&& die "you need gcc-4.4+ to build 64bit wine"
 	fi
 
 	if [[ ${PV} == "9999" ]] ; then
@@ -113,6 +114,7 @@ src_prepare() {
 		EPATCH_OPTS=-p1 epatch `pulse_patches "${DISTDIR}"`
 		eautoreconf
 	fi
+	epatch "${FILESDIR}"/${PN}-1.3-shell32-fortify.patch #336887
 	epatch "${FILESDIR}"/${PN}-1.1.15-winegcc.patch #260726
 	epatch_user #282735
 	sed -i '/^UPDATE_DESKTOP_DATABASE/s:=.*:=true:' tools/Makefile.in || die
@@ -168,7 +170,7 @@ src_configure() {
 	export LDCONFIG=/bin/true
 	use custom-cflags || strip-flags
 
-	if use win64 && use amd64 ; then
+	if use win64 ; then
 		do_configure 64 --enable-win64
 		use win32 && ABI=x86 do_configure 32 --with-wine64=../wine64
 	else

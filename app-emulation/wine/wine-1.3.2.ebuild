@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-emulation/wine/wine-1.3.2.ebuild,v 1.1 2010/09/06 20:38:10 vapier Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-emulation/wine/wine-1.3.2.ebuild,v 1.5 2010/09/21 22:19:42 vapier Exp $
 
 EAPI="2"
 
@@ -21,11 +21,14 @@ else
 fi
 
 pulse_patches() { echo "$1"/winepulse-{0.36,0.35-configure.ac,0.38-winecfg}.patch ; }
-GV="1.0.0-x86"
+GV="1.1.0"
 DESCRIPTION="free implementation of Windows(tm) on Unix"
 HOMEPAGE="http://www.winehq.org/"
 SRC_URI="${SRC_URI}
-	gecko? ( mirror://sourceforge/wine/wine_gecko-${GV}.cab )
+	gecko? (
+		mirror://sourceforge/wine/wine_gecko-${GV}-x86.cab
+		win64? ( mirror://sourceforge/wine/wine_gecko-${GV}-x86_64.cab )
+	)
 	pulseaudio? ( `pulse_patches http://art.ified.ca/downloads/winepulse` )"
 
 LICENSE="LGPL-2.1"
@@ -97,8 +100,9 @@ DEPEND="${RDEPEND}
 	sys-devel/flex"
 
 src_unpack() {
-	if [[ $(( $(gcc-major-version) * 100 + $(gcc-minor-version) )) -lt 404 ]] ; then
-		use win64 && die "you need gcc-4.4+ to build 64bit wine"
+	if use win64 ; then
+		[[ $(( $(gcc-major-version) * 100 + $(gcc-minor-version) )) -lt 404 ]] \
+			&& die "you need gcc-4.4+ to build 64bit wine"
 	fi
 
 	if [[ ${PV} == "9999" ]] ; then
@@ -113,6 +117,7 @@ src_prepare() {
 		EPATCH_OPTS=-p1 epatch `pulse_patches "${DISTDIR}"`
 		eautoreconf
 	fi
+	epatch "${FILESDIR}"/${PN}-1.3-shell32-fortify.patch #336887
 	epatch "${FILESDIR}"/${PN}-1.1.15-winegcc.patch #260726
 	epatch_user #282735
 	sed -i '/^UPDATE_DESKTOP_DATABASE/s:=.*:=true:' tools/Makefile.in || die
@@ -168,7 +173,7 @@ src_configure() {
 	export LDCONFIG=/bin/true
 	use custom-cflags || strip-flags
 
-	if use win64 && use amd64 ; then
+	if use win64 ; then
 		do_configure 64 --enable-win64
 		use win32 && ABI=x86 do_configure 32 --with-wine64=../wine64
 	else
@@ -195,7 +200,8 @@ src_install() {
 	dodoc ANNOUNCE AUTHORS README
 	if use gecko ; then
 		insinto /usr/share/wine/gecko
-		doins "${DISTDIR}"/wine_gecko-${GV}.cab || die
+		doins "${DISTDIR}"/wine_gecko-${GV}-x86.cab || die
+		use win64 && { doins "${DISTDIR}"/wine_gecko-${GV}-x86_64.cab || die ; }
 	fi
 	if ! use perl ; then
 		rm "${D}"/usr/bin/{wine{dump,maker},function_grep.pl} "${D}"/usr/share/man/man1/wine{dump,maker}.1 || die

@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-emulation/wine/wine-1.2.ebuild,v 1.1 2010/07/17 19:22:03 vapier Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-emulation/wine/wine-1.2.ebuild,v 1.4 2010/09/21 21:54:18 vapier Exp $
 
 EAPI="2"
 
@@ -15,7 +15,7 @@ if [[ ${PV} == "9999" ]] ; then
 else
 	MY_P="${PN}-${PV/_/-}"
 	SRC_URI="mirror://sourceforge/${PN}/${MY_P}.tar.bz2"
-	KEYWORDS="-* ~amd64 ~x86 ~x86-fbsd"
+	KEYWORDS="-* amd64 x86 ~x86-fbsd"
 	S=${WORKDIR}/${MY_P}
 fi
 
@@ -78,6 +78,7 @@ RDEPEND="truetype? (
 			>=app-emulation/emul-linux-x86-soundlibs-2.1
 		)
 		openal? ( app-emulation/emul-linux-x86-sdl )
+		opengl? ( app-emulation/emul-linux-x86-opengl )
 		app-emulation/emul-linux-x86-baselibs
 		>=sys-kernel/linux-headers-2.6
 	) )
@@ -109,6 +110,7 @@ src_prepare() {
 		EPATCH_OPTS=-p1 epatch `pulse_patches "${DISTDIR}"`
 		eautoreconf
 	fi
+	epatch "${FILESDIR}"/${PN}-1.3-shell32-fortify.patch #336887
 	epatch "${FILESDIR}"/${PN}-1.1.15-winegcc.patch #260726
 	epatch_user #282735
 	sed -i '/^UPDATE_DESKTOP_DATABASE/s:=.*:=true:' tools/Makefile.in || die
