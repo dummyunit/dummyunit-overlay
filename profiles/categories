@@ -10,4 +10,5 @@ media-fonts
 media-libs
 net-p2p
 sys-devel
+sys-kernel
 x11-libs
