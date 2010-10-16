@@ -14,7 +14,7 @@ SLOT="0"
 KEYWORDS="-* ~amd64 ~x86"
 # Parallel support looks ugly, not supported in this ebuild
 IUSE="scanner qt4"
-RESTRICT="mirror strip"
+RESTRICT="strip"
 
 DEPEND=""
 RDEPEND="net-print/cups
@@ -24,30 +24,15 @@ RDEPEND="net-print/cups
 
 S=${WORKDIR}/cdroot/Linux
 
-src_unpack() {
-	# Trailing garbage error, do not die
-	tar xozf ${DISTDIR}/${A}
-}
-
 src_prepare() {
 	# Fix permissions
 	find . -type d -exec chmod 755 '{}' \;
 	find . -type f -exec chmod 644 '{}' \;
 	find . -type f -name \*.sh -exec chmod 755 '{}' \;
 	chmod 755 ./i386/at_root/usr/sbin/*
-	chmod 755 ./i386/at_root/usr/lib/libmfp.so*
-	chmod 755 ./i386/at_root/usr/lib/cups/filter/raster*
-	chmod 755 ./i386/at_root/usr/lib/cups/filter/pscms
-	chmod 755 ./i386/at_root/usr/lib/cups/backend/mfp
-	chmod 755 ./i386/at_root/usr/lib/sane/*
 	chmod 755 ./i386/qt4apps/at_opt/bin/*
 	chmod 755 ./i386/qt4apps/at_opt/lib/*
 	chmod 755 ./x86_64/at_root/usr/sbin/*
-	chmod 755 ./x86_64/at_root/usr/lib64/libmfp.so*
-	chmod 755 ./x86_64/at_root/usr/lib64/cups/filter/raster*
-	chmod 755 ./x86_64/at_root/usr/lib64/cups/filter/pscms
-	chmod 755 ./x86_64/at_root/usr/lib64/cups/backend/mfp
-	chmod 755 ./x86_64/at_root/usr/lib64/sane/*
 	chmod 755 ./x86_64/qt4apps/at_opt/bin/*
 	chmod 755 ./x86_64/qt4apps/at_opt/lib/*
 }
@@ -63,10 +48,12 @@ src_install() {
 	fi
 
 	# Printer files
-	dodir /usr/libexec
-	cp -r ${SARCH}/at_root/usr/${SLIBDIR}/cups "${D}"/usr/libexec
-	dodir /usr/share/cups/model
-	cp -r noarch/at_opt/share/ppd "${D}"/usr/share/cups/model/samsung
+	exeinto /usr/libexec/cups/backend
+	doexe ${SARCH}/at_root/usr/${SLIBDIR}/cups/backend/mfp
+	exeinto /usr/libexec/cups/filter
+	doexe ${SARCH}/at_root/usr/${SLIBDIR}/cups/filter/{pscms,rasterto*,libscmssc.so}
+	insinto /usr/share/cups/model/samsung
+	doins -r noarch/at_opt/share/ppd/*
 	gzip "${D}"/usr/share/cups/model/samsung/*.ppd
 	dolib.so ${SARCH}/at_root/usr/${SLIBDIR}/libmfp.so.1.0.1
 
