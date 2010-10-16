@@ -9,6 +9,7 @@ games-simulation
 media-fonts
 media-libs
 net-p2p
+net-print
 sys-devel
 sys-kernel
 x11-libs
