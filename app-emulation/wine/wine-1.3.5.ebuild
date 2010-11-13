@@ -1,6 +1,6 @@
 # Copyright 1999-2010 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-emulation/wine/wine-1.3.5.ebuild,v 1.1 2010/10/21 23:41:55 vapier Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-emulation/wine/wine-1.3.5.ebuild,v 1.2 2010/11/07 21:57:52 ssuominen Exp $
 
 EAPI="2"
 
@@ -33,7 +33,7 @@ SRC_URI="${SRC_URI}
 
 LICENSE="LGPL-2.1"
 SLOT="0"
-IUSE="alsa capi corefonts cups custom-cflags dbus esd fontconfig +gecko gnutls gphoto2 gsm hal jack jpeg lcms ldap mp3 nas ncurses openal +opengl +oss +perl png pulseaudio samba scanner ssl test +threads +truetype +win32 +win64 +X xcomposite xinerama xml"
+IUSE="alsa capi cups custom-cflags dbus esd fontconfig +gecko gnutls gphoto2 gsm hal jack jpeg lcms ldap mp3 nas ncurses openal +opengl +oss +perl png pulseaudio samba scanner ssl test +threads +truetype +win32 +win64 +X xcomposite xinerama xml"
 RESTRICT="test" #72375
 
 MLIB_DEPS="amd64? (
@@ -47,10 +47,7 @@ MLIB_DEPS="amd64? (
 	app-emulation/emul-linux-x86-baselibs
 	>=sys-kernel/linux-headers-2.6
 	)"
-RDEPEND="truetype? (
-		>=media-libs/freetype-2.0.0
-		corefonts? ( media-fonts/corefonts )
-	)
+RDEPEND="truetype? ( >=media-libs/freetype-2.0.0 media-fonts/corefonts )
 	perl? ( dev-lang/perl dev-perl/XML-Simple )
 	capi? ( net-dialup/capi4k-utils )
 	ncurses? ( >=sys-libs/ncurses-5.2 )
@@ -77,7 +74,7 @@ RDEPEND="truetype? (
 	opengl? ( virtual/opengl )
 	pulseaudio? ( media-sound/pulseaudio ${AUTOTOOLS_DEPEND} )
 	gsm? ( media-sound/gsm )
-	jpeg? ( media-libs/jpeg )
+	jpeg? ( virtual/jpeg )
 	ldap? ( net-nds/openldap )
 	lcms? ( =media-libs/lcms-1* )
 	mp3? ( >=media-sound/mpg123-1.5.0 )
