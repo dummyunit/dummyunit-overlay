@@ -1,0 +1,60 @@
+diff -udr qgoogletranslator-1.2.1.orig/CMakeLists.txt qgoogletranslator-1.2.1/CMakeLists.txt
+--- qgoogletranslator-1.2.1.orig/CMakeLists.txt	2010-11-21 12:54:19.000000000 +0300
++++ qgoogletranslator-1.2.1/CMakeLists.txt	2010-11-21 18:08:27.387442697 +0300
+@@ -29,10 +29,10 @@
+ 
+ include_directories(
+ ${CMAKE_CURRENT_BINARY_DIR}
+-${CMAKE_INCLUDE_PATH})
++${CMAKE_INCLUDE_PATH}
++/usr/include/QxtCore
++/usr/include/QxtGui)
+ 
+-add_subdirectory(src/3rdparty/qxtshortcut)
+-add_subdirectory(src/3rdparty/qxtjson)
+ add_subdirectory(src/3rdparty/qtsingleapplication)
+ 
+ configure_file(src/defines.h.in defines.h)
+@@ -116,8 +116,17 @@
+     target_link_libraries(qgoogletranslator ${X11_LIBRARIES})
+ endif (Q_WS_X11)
+ 
++FIND_LIBRARY(QXT_GUI QxtGui
++	/usr/lib64
++	/usr/lib
++	DOC "The QxtGui library")
++ 
++FIND_LIBRARY(QXT_CORE QxtCore
++	/usr/lib64
++	/usr/lib
++	DOC "The QxtCore library")
+ 
+-target_link_libraries(qgoogletranslator ${QT_LIBRARIES} ${QT_QTNETWORK_LIBRARIES} qxtjson qxtshortcut qtsingleapplicaton)
++target_link_libraries(qgoogletranslator ${QT_LIBRARIES} ${QT_QTNETWORK_LIBRARIES} ${QXT_CORE} ${QXT_GUI} qtsingleapplicaton)
+ 
+ 
+ # install for linux
+diff -udr qgoogletranslator-1.2.1.orig/src/mainwindow.cpp qgoogletranslator-1.2.1/src/mainwindow.cpp
+--- qgoogletranslator-1.2.1.orig/src/mainwindow.cpp	2010-11-21 11:08:13.000000000 +0300
++++ qgoogletranslator-1.2.1/src/mainwindow.cpp	2010-11-21 17:40:56.455442746 +0300
+@@ -49,7 +49,7 @@
+ #include <QtCore/QDate>
+ #include <QTranslator>
+ #include <QtCore/QThread>
+-#include "3rdparty/qxtshortcut/qxtglobalshortcut.h"
++#include <QxtGui/QxtGlobalShortcut>
+ 
+ // Used by keyboard modifier check routine.
+ #ifdef Q_WS_X11
+diff -udr qgoogletranslator-1.2.1.orig/src/translate.cpp qgoogletranslator-1.2.1/src/translate.cpp
+--- qgoogletranslator-1.2.1.orig/src/translate.cpp	2010-11-20 22:04:57.000000000 +0300
++++ qgoogletranslator-1.2.1/src/translate.cpp	2010-11-21 17:42:23.075443004 +0300
+@@ -28,7 +28,7 @@
+ #include <QtCore/QStringList>
+ #include <QtCore/QDebug>
+ 
+-#include "3rdparty/qxtjson/qxtjson.h"
++#include <QxtCore/QxtJSON>
+ #include "translate.h"
+ 
+ 
