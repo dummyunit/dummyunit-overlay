@@ -9,13 +9,12 @@ MY_PN=FreeImage
 MY_P=${MY_PN}${PV//.}
 DESCRIPTION="Image library supporting many formats"
 HOMEPAGE="http://freeimage.sourceforge.net/"
-SRC_URI="mirror://sourceforge/${PN}/${MY_P}.zip
-	doc? ( mirror://sourceforge/${PN}/${MY_P}.pdf )"
+SRC_URI="mirror://sourceforge/${PN}/${MY_P}.zip"
 
 LICENSE="|| ( GPL-2 FIPL-1.0 )"
 SLOT="0"
 KEYWORDS="~amd64 ppc ~x86"
-IUSE="cxx doc"
+IUSE="cxx"
 
 DEPEND="app-arch/unzip"
 RDEPEND=""
@@ -51,5 +50,4 @@ src_install() {
 		emake -f Makefile.fip install || die "emake install fip failed"
 	fi
 	dodoc README.linux Whatsnew.txt
-	use doc && dodoc "${DISTDIR}"/${MY_P}.pdf
 }
