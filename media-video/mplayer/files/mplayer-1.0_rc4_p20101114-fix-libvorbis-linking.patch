@@ -1,0 +1,13 @@
+diff --git a/configure b/configure
+index 1f59faf..912a350 100755
+--- a/configure
++++ b/configure
+@@ -6319,7 +6319,7 @@ elif test "$_libvorbis" = yes ; then
+   def_vorbis='#define CONFIG_OGGVORBIS 1'
+   codecmodules="libvorbis $codecmodules"
+   res_comment="libvorbis"
+-  extra_ldflags="$extra_ldflags -lvorbis -logg"
++  extra_ldflags="$extra_ldflags -lvorbis -logg -lvorbisenc"
+   libavencoders="$libavencoders LIBVORBIS_ENCODER"
+ else
+   _vorbis=no
