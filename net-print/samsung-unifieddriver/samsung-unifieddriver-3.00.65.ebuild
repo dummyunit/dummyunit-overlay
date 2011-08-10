@@ -51,7 +51,7 @@ src_install() {
 	exeinto /usr/libexec/cups/backend
 	doexe ${SARCH}/at_root/usr/${SLIBDIR}/cups/backend/mfp
 	exeinto /usr/libexec/cups/filter
-	doexe ${SARCH}/at_root/usr/${SLIBDIR}/cups/filter/{pscms,rasterto*,libscmssc.so}
+	doexe ${SARCH}/at_root/usr/${SLIBDIR}/cups/filter/{pscms,rasterto*}
 	insinto /usr/share/cups/model/samsung
 	doins -r noarch/at_opt/share/ppd/*
 	gzip "${D}"/usr/share/cups/model/samsung/*.ppd
