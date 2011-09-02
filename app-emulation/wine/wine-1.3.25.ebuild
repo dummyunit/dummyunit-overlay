@@ -1,6 +1,6 @@
 # Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-emulation/wine/wine-1.3.25.ebuild,v 1.1 2011/08/07 13:27:17 vapier Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-emulation/wine/wine-1.3.25.ebuild,v 1.5 2011/08/20 19:23:56 vapier Exp $
 
 EAPI="2"
 
@@ -31,12 +31,15 @@ SRC_URI="${SRC_URI}
 
 LICENSE="LGPL-2.1"
 SLOT="0"
-IUSE="alsa capi +corefonts cups custom-cflags dbus fontconfig +gecko gnutls gphoto2 gsm gstreamer hal jpeg lcms ldap mp3 ncurses nls openal opencl +opengl +oss +perl png samba scanner ssl test +threads +truetype v4l +win32 +win64 +X xcomposite xinerama xml"
+IUSE="alsa capi +corefonts cups custom-cflags dbus fontconfig +gecko gnutls gphoto2 gsm gstreamer hal hardened jpeg lcms ldap mp3 ncurses nls openal opencl +opengl +oss +perl png samba scanner ssl test +threads +truetype v4l +win32 +win64 +X xcomposite xinerama xml"
 RESTRICT="test" #72375
 
 MLIB_DEPS="amd64? (
 	truetype? ( >=app-emulation/emul-linux-x86-xlibs-2.1 )
-	X? ( >=app-emulation/emul-linux-x86-xlibs-2.1 )
+	X? (
+		>=app-emulation/emul-linux-x86-xlibs-2.1
+		>=app-emulation/emul-linux-x86-soundlibs-2.1
+	)
 	openal? ( app-emulation/emul-linux-x86-sdl )
 	opengl? ( app-emulation/emul-linux-x86-opengl )
 	v4l? ( app-emulation/emul-linux-x86-medialibs )
@@ -84,7 +87,7 @@ RDEPEND="truetype? (
 	v4l? ( media-libs/libv4l )
 	!win64? ( ${MLIB_DEPS} )
 	win32? ( ${MLIB_DEPS} )
-	xcomposite? ( x11-libs/libXcomposite ) "
+	xcomposite? ( x11-libs/libXcomposite )"
 DEPEND="${RDEPEND}
 	X? (
 		x11-proto/inputproto
@@ -92,7 +95,8 @@ DEPEND="${RDEPEND}
 		x11-proto/xf86vidmodeproto
 	)
 	xinerama? ( x11-proto/xineramaproto )
-	sys-devel/bison
+	!hardened? ( sys-devel/prelink )
+	virtual/yacc
 	sys-devel/flex"
 
 src_unpack() {
