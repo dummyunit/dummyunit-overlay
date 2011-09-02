@@ -29,7 +29,7 @@ SRC_URI="${SRC_URI}
 
 LICENSE="LGPL-2.1"
 SLOT="0"
-IUSE="alsa capi +corefonts cups custom-cflags dbus esd fontconfig +gecko gnutls gphoto2 gsm hal hardened jack jpeg lcms ldap mp3 nas ncurses openal +opengl +oss +perl png pulseaudio samba scanner ssl test +threads +truetype v4l win64 +X xcomposite xinerama xml"
+IUSE="alsa capi +corefonts cups custom-cflags dbus esd fontconfig +gecko gnutls gphoto2 gsm hal jack jpeg lcms ldap mp3 nas ncurses openal +opengl +oss +perl png pulseaudio samba scanner ssl test +threads +truetype v4l win64 +X xcomposite xinerama xml"
 RESTRICT="test" #72375
 
 RDEPEND="truetype? (
@@ -93,7 +93,6 @@ DEPEND="${RDEPEND}
 		x11-proto/xf86vidmodeproto
 	)
 	xinerama? ( x11-proto/xineramaproto )
-	!hardened? ( sys-devel/prelink )
 	virtual/yacc
 	sys-devel/flex"
 
