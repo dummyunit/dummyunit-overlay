@@ -50,6 +50,7 @@ RDEPEND="
 DEPEND="
 	${DEPEND_COMMON}
 	dev-util/pkgconfig
+	app-text/docbook2X
 	"
 
 src_prepare() {
