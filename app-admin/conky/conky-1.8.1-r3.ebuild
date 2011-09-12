@@ -59,7 +59,6 @@ src_prepare() {
 		"${FILESDIR}/${P}-secunia-SA43225.patch" \
 		"${FILESDIR}/${P}-acpitemp.patch" \
 		"${FILESDIR}/${P}-curl-headers.patch" \
-		"${FILESDIR}/${P}-maxinterfaces.patch" \
 		"${FILESDIR}/${P}-more-alignments.patch"
 	eautoreconf
 }
