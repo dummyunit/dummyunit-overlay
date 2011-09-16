@@ -1,7 +1,8 @@
-# Copyright 1999-2009 Gentoo Foundation
+# Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-devel/distcc/distcc-3.0-r4.ebuild,v 1.12 2009/03/13 17:10:24 armin76 Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-devel/distcc/distcc-3.0-r4.ebuild,v 1.13 2011/03/30 11:12:30 angelos Exp $
 
+EAPI=1
 inherit eutils fdo-mime flag-o-matic multilib toolchain-funcs
 
 DESCRIPTION="a program to distribute compilation of C code across several machines on a network"
@@ -21,11 +22,11 @@ RDEPEND=">=dev-lang/python-2.4
 	gnome? (
 		>=gnome-base/libgnome-2
 		>=gnome-base/libgnomeui-2
-		>=x11-libs/gtk+-2
+		x11-libs/gtk+:2
 		x11-libs/pango
 	)
 	gtk? (
-		>=x11-libs/gtk+-2
+		x11-libs/gtk+:2
 	)"
 DEPEND="${RDEPEND}
 	dev-util/pkgconfig"
@@ -105,15 +106,8 @@ src_install() {
 
 	# create the masquerade directory
 	dodir "${DCCC_PATH}"
-	exeinto "${DCCC_PATH}"
-	cat > "${T}/${CTARGET:-${CHOST}}-wrapper" <<-EOF
-	#!/bin/bash
-	exec ${DCCC_PATH}/${CTARGET:-${CHOST}}-g\${0:\$[-2]} "\$@"
-	EOF
-	doexe "${T}/${CTARGET:-${CHOST}}-wrapper"
-
 	for f in cc c++ gcc g++; do
-		dosym "${DCCC_PATH}/${CTARGET:-${CHOST}}-wrapper" "${DCCC_PATH}/${f}"
+		dosym /usr/bin/distcc "${DCCC_PATH}/${f}"
 		if [ "${f}" != "cc" ]; then
 			dosym /usr/bin/distcc "${DCCC_PATH}/${CTARGET:-${CHOST}}-${f}"
 		fi
