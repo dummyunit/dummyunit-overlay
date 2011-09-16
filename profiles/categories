@@ -15,6 +15,5 @@ media-video
 net-p2p
 net-print
 sys-devel
-sys-kernel
 x11-libs
 x11-terms
