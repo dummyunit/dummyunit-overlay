@@ -67,7 +67,6 @@ src_prepare() {
 		ewarn "Gentoo community."
 		epatch "${FILESDIR}"/${PN}-9.05_no-MOTIF-WM-INFO.patch
 		epatch "${FILESDIR}"/${PN}-9.06-font-width.patch
-		epatch "${FILESDIR}"/${PN}-single-line-scroll.patch
 	fi
 
 	eautoreconf
