@@ -1,6 +1,6 @@
 # Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-emulation/wine/wine-1.3.25.ebuild,v 1.6 2011/09/15 03:17:51 vapier Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-emulation/wine/wine-1.3.25.ebuild,v 1.7 2011/09/18 09:08:12 ssuominen Exp $
 
 EAPI="2"
 
@@ -31,7 +31,7 @@ SRC_URI="${SRC_URI}
 
 LICENSE="LGPL-2.1"
 SLOT="0"
-IUSE="alsa capi +corefonts cups custom-cflags dbus fontconfig +gecko gnutls gphoto2 gsm gstreamer hal jpeg lcms ldap mp3 ncurses nls openal opencl +opengl +oss +perl png samba scanner ssl test +threads +truetype v4l +win32 +win64 +X xcomposite xinerama xml"
+IUSE="alsa capi +corefonts cups custom-cflags dbus fontconfig +gecko gnutls gphoto2 gsm gstreamer jpeg lcms ldap mp3 ncurses nls openal opencl +opengl +oss +perl png samba scanner ssl test +threads +truetype v4l +win32 +win64 +X xcomposite xinerama xml"
 RESTRICT="test" #72375
 
 MLIB_DEPS="amd64? (
@@ -61,7 +61,6 @@ RDEPEND="truetype? (
 	dbus? ( sys-apps/dbus )
 	gnutls? ( net-libs/gnutls )
 	gstreamer? ( media-libs/gstreamer media-libs/gst-plugins-base )
-	hal? ( sys-apps/hal )
 	X? (
 		x11-libs/libXcursor
 		x11-libs/libXrandr
@@ -138,7 +137,7 @@ do_configure() {
 		$(use_with gphoto2 gphoto) \
 		$(use_with gsm) \
 		$(use_with gstreamer) \
-		$(! use dbus && echo --without-hal || use_with hal) \
+		--without-hal \
 		$(use_with jpeg) \
 		$(use_with ldap) \
 		$(use_with mp3 mpg123) \
