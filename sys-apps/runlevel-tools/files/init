@@ -1,0 +1,40 @@
+#!/sbin/runscript
+# Copyright 2011 Stanislav Cymbalov
+# Distributed under the terms of the GNU General Public License v3
+
+depend() {
+	before *
+	need hostname
+}
+
+start() {
+	hostname="`hostname`"
+
+	if [ -e /etc/runlevel-tools.conf ]; then
+		. /etc/runlevel-tools.conf
+	fi
+	affected="${AFFECTED_SERVICES}"
+
+	ebegin "Applying configuration for runlevel '${RC_RUNLEVEL}'"
+	( cd /etc/ && git checkout -q "${hostname}-${RC_RUNLEVEL}" )
+	eend $?
+	[ "$?" -eq 0 ] || return $?
+
+	if [ -e /etc/runlevel-tools.conf ]; then
+		. /etc/runlevel-tools.conf
+	fi
+	affected="`echo "${affected}" "${AFFECTED_SERVICES}" | tr ' ' '\n' | sort | uniq | tr '\n' ' '`"
+
+	to_restart=
+	for svc in ${affected}; do
+		for script in /etc/init.d/${svc}; do
+			real_svc="`basename ${script}`"
+			service_stopped "${real_svc}" || to_restart="${to_restart} ${real_svc}"
+		done
+	done
+
+	einfo "Restarting needed services"
+	mark_service_started ${RC_SVCNAME} # workaround for waiting for this service
+	rc-config restart ${to_restart}
+	mark_service_starting ${RC_SVCNAME}
+}
