@@ -6,6 +6,7 @@ EAPI=2
 
 USE_RUBY="ruby18 ree18"
 
+RUBY_FAKEGEM_TASK_DOC=""
 RUBY_FAKEGEM_EXTRADOC="README"
 
 inherit ruby-fakegem
@@ -16,7 +17,7 @@ HOMEPAGE="http://github.com/masover/blankslate"
 LICENSE="BSD-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="examples"
+IUSE=""
 
 ruby_add_bdepend "
 	dev-ruby/bundler
