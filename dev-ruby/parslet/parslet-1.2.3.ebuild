@@ -6,6 +6,7 @@ EAPI=2
 
 USE_RUBY="ruby18 ree18"
 
+RUBY_FAKEGEM_TASK_DOC="" # docs building broken
 RUBY_FAKEGEM_EXTRADOC="README HISTORY.txt"
 
 inherit ruby-fakegem
@@ -21,6 +22,7 @@ IUSE="examples"
 ruby_add_bdepend "
 	test? ( dev-ruby/flexmock dev-ruby/rspec:2 )
 "
+#	doc? (  dev-ruby/sdoc dev-ruby/rspec:2 )
 ruby_add_rdepend "
 	dev-ruby/blankslate
 "
