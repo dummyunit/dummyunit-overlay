@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<herd>no-herd</herd>
+	<maintainer>
+		<email>dummyunit@gmail.com</email>
+		<name>Stas Cymbalov</name>
+		<description>Overlay maintainer</description>
+	</maintainer>
+	<longdescription>Minetest-c55 is one of the first InfiniMiner/Minecraft(/whatever) inspired games (started October 2010), with a goal of taking the survival multiplayer gameplay to a slightly different direction.</longdescription>
+	<use>
+		<flag name='client'>Build client</flag>
+		<flag name='server'>Build server</flag>
+	</use>
+</pkgmetadata>
