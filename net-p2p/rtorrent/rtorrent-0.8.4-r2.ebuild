@@ -31,7 +31,7 @@ pkg_setup() {
 		ewarn "You can't use app-misc/screen and app-misc/dtach"
 		ewarn "with rtorrent at the same time!"
 		ewarn "app-misc/screen will be used by default"
-	fi		
+	fi
 }
 
 src_compile() {

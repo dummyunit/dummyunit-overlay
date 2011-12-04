@@ -55,10 +55,6 @@ src_install() {
 	autotools-utils_src_install
 	doman doc/rtorrent.1
 
-	if use daemon; then
-		newinitd "${FILESDIR}/rtorrentd.init" rtorrentd
-		newconfd "${FILESDIR}/rtorrentd.conf" rtorrentd
-	fi
 	if use screen; then
 		newinitd "${FILESDIR}/rtorrentd.init.screen" rtorrentd
 		newconfd "${FILESDIR}/rtorrentd.conf.screen" rtorrentd
