@@ -1,6 +1,6 @@
 # Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-emulation/wine/wine-1.3.1.ebuild,v 1.17 2012/01/14 03:20:51 tetromino Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-emulation/wine/wine-1.3.36.ebuild,v 1.2 2012/01/14 03:20:51 tetromino Exp $
 
 EAPI="4"
 
@@ -18,16 +18,19 @@ else
 	S=${WORKDIR}/${MY_P}
 fi
 
-GV="1.0.0-x86"
+GV="1.4"
 DESCRIPTION="free implementation of Windows(tm) on Unix"
 HOMEPAGE="http://www.winehq.org/"
 SRC_URI="${SRC_URI}
-	gecko? ( mirror://sourceforge/wine/wine_gecko-${GV}.cab )"
+	gecko? (
+		mirror://sourceforge/wine/wine_gecko-${GV}-x86.msi
+		win64? ( mirror://sourceforge/wine/wine_gecko-${GV}-x86_64.msi )
+	)"
 
 LICENSE="LGPL-2.1"
 SLOT="0"
-IUSE="alsa capi +corefonts cups custom-cflags dbus elibc_glibc fontconfig +gecko gnutls gphoto2 gsm jack jpeg lcms ldap mp3 nas ncurses openal +opengl +oss +perl png samba scanner ssl test +threads +truetype v4l +win32 +win64 +X xcomposite xinerama xml"
-REQUIRED_USE="elibc_glibc? ( threads )"
+IUSE="alsa capi +corefonts cups custom-cflags elibc_glibc fontconfig +gecko gnutls gphoto2 gsm gstreamer jpeg lcms ldap mp3 ncurses nls openal opencl +opengl +oss +perl png samba scanner ssl test +threads +truetype udisks v4l +win32 +win64 +X xcomposite xinerama xml"
+REQUIRED_USE="elibc_glibc? ( threads )" #286560
 RESTRICT="test" #72375
 
 MLIB_DEPS="amd64? (
@@ -53,10 +56,13 @@ RDEPEND="truetype? (
 	ncurses? ( >=sys-libs/ncurses-5.2 )
 	fontconfig? ( media-libs/fontconfig )
 	gphoto2? ( media-libs/libgphoto2 )
-	jack? ( media-sound/jack-audio-connection-kit )
 	openal? ( media-libs/openal )
-	dbus? ( sys-apps/dbus )
+	udisks? (
+		sys-apps/dbus
+		sys-fs/udisks
+	)
 	gnutls? ( net-libs/gnutls )
+	gstreamer? ( media-libs/gstreamer media-libs/gst-plugins-base )
 	X? (
 		x11-libs/libXcursor
 		x11-libs/libXrandr
@@ -67,14 +73,15 @@ RDEPEND="truetype? (
 	)
 	xinerama? ( x11-libs/libXinerama )
 	alsa? ( media-libs/alsa-lib )
-	nas? ( media-libs/nas )
 	cups? ( net-print/cups )
+	opencl? ( virtual/opencl )
 	opengl? ( virtual/opengl )
 	gsm? ( media-sound/gsm )
 	jpeg? ( virtual/jpeg )
 	ldap? ( net-nds/openldap )
 	lcms? ( =media-libs/lcms-1* )
 	mp3? ( >=media-sound/mpg123-1.5.0 )
+	nls? ( sys-devel/gettext )
 	samba? ( >=net-fs/samba-3.0.25 )
 	xml? ( dev-libs/libxml2 dev-libs/libxslt )
 	scanner? ( media-gfx/sane-backends )
@@ -127,18 +134,19 @@ do_configure() {
 		$(use_with lcms cms) \
 		$(use_with cups) \
 		$(use_with ncurses curses) \
-		--without-esd \
+		$(use_with udisks dbus) \
 		$(use_with fontconfig) \
 		$(use_with gnutls) \
 		$(use_with gphoto2 gphoto) \
 		$(use_with gsm) \
+		$(use_with gstreamer) \
 		--without-hal \
-		$(use_with jack) \
 		$(use_with jpeg) \
 		$(use_with ldap) \
 		$(use_with mp3 mpg123) \
-		$(use_with nas) \
+		$(use_with nls gettext) \
 		$(use_with openal) \
+		$(use_with opencl) \
 		$(use_with opengl) \
 		$(use_with ssl openssl) \
 		$(use_with oss) \
@@ -159,6 +167,7 @@ do_configure() {
 
 	popd >/dev/null
 }
+
 src_configure() {
 	export LDCONFIG=/bin/true
 	use custom-cflags || strip-flags
@@ -190,7 +199,8 @@ src_install() {
 	dodoc ANNOUNCE AUTHORS README
 	if use gecko ; then
 		insinto /usr/share/wine/gecko
-		doins "${DISTDIR}"/wine_gecko-${GV}.cab || die
+		doins "${DISTDIR}"/wine_gecko-${GV}-x86.msi
+		use win64 && doins "${DISTDIR}"/wine_gecko-${GV}-x86_64.msi
 	fi
 	if ! use perl ; then
 		rm "${D}"/usr/bin/{wine{dump,maker},function_grep.pl} "${D}"/usr/share/man/man1/wine{dump,maker}.1 || die

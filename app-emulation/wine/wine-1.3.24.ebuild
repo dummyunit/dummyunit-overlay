@@ -1,26 +1,23 @@
-# Copyright 1999-2011 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-emulation/wine/wine-1.3.24.ebuild,v 1.6 2011/09/18 09:08:12 ssuominen Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-emulation/wine/wine-1.3.24.ebuild,v 1.9 2012/01/14 03:20:51 tetromino Exp $
 
-EAPI="2"
+EAPI="4"
 
 inherit eutils flag-o-matic multilib
 
 if [[ ${PV} == "9999" ]] ; then
 	EGIT_REPO_URI="git://source.winehq.org/git/wine.git"
-	inherit git-2 autotools
+	inherit git-2
 	SRC_URI=""
 	#KEYWORDS=""
 else
-	AUTOTOOLS_AUTO_DEPEND="no"
-	inherit autotools
 	MY_P="${PN}-${PV/_/-}"
 	SRC_URI="mirror://sourceforge/${PN}/${MY_P}.tar.bz2"
 	KEYWORDS="-* ~amd64 ~x86 ~x86-fbsd"
 	S=${WORKDIR}/${MY_P}
 fi
 
-pulse_patches() { echo "$1"/winepulse-{0.40,configure.ac-1.3.22,winecfg-1.3.11}.patch ; }
 GV="1.2.0"
 DESCRIPTION="free implementation of Windows(tm) on Unix"
 HOMEPAGE="http://www.winehq.org/"
@@ -28,19 +25,19 @@ SRC_URI="${SRC_URI}
 	gecko? (
 		mirror://sourceforge/wine/wine_gecko-${GV}-x86.msi
 		win64? ( mirror://sourceforge/wine/wine_gecko-${GV}-x86_64.msi )
-	)
-	pulseaudio? ( `pulse_patches http://art.ified.ca/downloads/winepulse` )"
+	)"
 
 LICENSE="LGPL-2.1"
 SLOT="0"
-IUSE="alsa capi +corefonts cups custom-cflags dbus esd fontconfig +gecko gnutls gphoto2 gsm gstreamer jack jpeg lcms ldap mp3 nas ncurses nls openal opencl +opengl +oss +perl png pulseaudio samba scanner ssl test +threads +truetype v4l +win32 +win64 +X xcomposite xinerama xml"
+IUSE="alsa capi +corefonts cups custom-cflags dbus elibc_glibc fontconfig +gecko gnutls gphoto2 gsm gstreamer jack jpeg lcms ldap mp3 nas ncurses nls openal opencl +opengl +oss +perl png samba scanner ssl test +threads +truetype v4l +win32 +win64 +X xcomposite xinerama xml"
+REQUIRED_USE="elibc_glibc? ( threads )" #286560
 RESTRICT="test" #72375
 
 MLIB_DEPS="amd64? (
 	truetype? ( >=app-emulation/emul-linux-x86-xlibs-2.1 )
 	X? (
 		>=app-emulation/emul-linux-x86-xlibs-2.1
-		>=app-emulation/emul-linux-x86-soundlibs-2.1[pulseaudio?]
+		>=app-emulation/emul-linux-x86-soundlibs-2.1
 	)
 	mp3? ( app-emulation/emul-linux-x86-soundlibs )
 	openal? ( app-emulation/emul-linux-x86-sdl )
@@ -74,12 +71,10 @@ RDEPEND="truetype? (
 	)
 	xinerama? ( x11-libs/libXinerama )
 	alsa? ( media-libs/alsa-lib )
-	esd? ( media-sound/esound )
 	nas? ( media-libs/nas )
 	cups? ( net-print/cups )
-	opencl? ( x11-drivers/nvidia-drivers >=dev-util/nvidia-cuda-toolkit-3.1 )
+	opencl? ( virtual/opencl )
 	opengl? ( virtual/opengl )
-	pulseaudio? ( media-sound/pulseaudio )
 	gsm? ( media-sound/gsm )
 	jpeg? ( virtual/jpeg )
 	ldap? ( net-nds/openldap )
@@ -96,7 +91,6 @@ RDEPEND="truetype? (
 	win32? ( ${MLIB_DEPS} )
 	xcomposite? ( x11-libs/libXcomposite )"
 DEPEND="${RDEPEND}
-	pulseaudio? ( ${AUTOTOOLS_DEPEND} )
 	X? (
 		x11-proto/inputproto
 		x11-proto/xextproto
@@ -120,10 +114,6 @@ src_unpack() {
 }
 
 src_prepare() {
-	if use pulseaudio ; then
-		EPATCH_OPTS=-p1 epatch `pulse_patches "${DISTDIR}"`
-		eautoreconf
-	fi
 	epatch "${FILESDIR}"/${PN}-1.1.15-winegcc.patch #260726
 	epatch_user #282735
 	sed -i '/^UPDATE_DESKTOP_DATABASE/s:=.*:=true:' tools/Makefile.in || die
@@ -143,7 +133,7 @@ do_configure() {
 		$(use_with lcms cms) \
 		$(use_with cups) \
 		$(use_with ncurses curses) \
-		$(use_with esd) \
+		--without-esd \
 		$(use_with fontconfig) \
 		$(use_with gnutls) \
 		$(use_with gphoto2 gphoto) \
@@ -163,7 +153,6 @@ do_configure() {
 		$(use_with oss) \
 		$(use_with png) \
 		$(use_with threads pthread) \
-		$(use pulseaudio && use_with pulseaudio pulse) \
 		$(use_with scanner sane) \
 		$(use_enable test tests) \
 		$(use_with truetype freetype) \
@@ -175,7 +164,7 @@ do_configure() {
 		$(use_with xml xslt) \
 		$2
 
-	emake -j1 depend || die "depend"
+	emake -j1 depend
 
 	popd >/dev/null
 }
@@ -196,7 +185,7 @@ src_compile() {
 	for b in 64 32 ; do
 		local builddir="${WORKDIR}/wine${b}"
 		[[ -d ${builddir} ]] || continue
-		emake -C "${builddir}" all || die
+		emake -C "${builddir}" all
 	done
 }
 
@@ -205,13 +194,13 @@ src_install() {
 	for b in 64 32 ; do
 		local builddir="${WORKDIR}/wine${b}"
 		[[ -d ${builddir} ]] || continue
-		emake -C "${builddir}" install DESTDIR="${D}" || die
+		emake -C "${builddir}" install DESTDIR="${D}"
 	done
 	dodoc ANNOUNCE AUTHORS README
 	if use gecko ; then
 		insinto /usr/share/wine/gecko
-		doins "${DISTDIR}"/wine_gecko-${GV}-x86.msi || die
-		use win64 && { doins "${DISTDIR}"/wine_gecko-${GV}-x86_64.msi || die ; }
+		doins "${DISTDIR}"/wine_gecko-${GV}-x86.msi
+		use win64 && doins "${DISTDIR}"/wine_gecko-${GV}-x86_64.msi
 	fi
 	if ! use perl ; then
 		rm "${D}"/usr/bin/{wine{dump,maker},function_grep.pl} "${D}"/usr/share/man/man1/wine{dump,maker}.1 || die
