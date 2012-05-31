@@ -4,6 +4,8 @@
 
 EAPI="3"
 
+inherit eutils
+
 DESCRIPTION="MessagePack is a binary-based efficient data interchange format"
 HOMEPAGE="http://msgpack.org/"
 SRC_URI="http://msgpack.org/releases/cpp/${P}.tar.gz"
@@ -15,6 +17,11 @@ IUSE="static-libs test"
 
 DEPEND="test? ( dev-cpp/gtest )"
 RDEPEND=""
+
+src_prepare() {
+	epatch "${FILESDIR}"/${PN}-0.5.7-fix-empty-struct-pack.patch
+	epatch "${FILESDIR}"/${PN}-0.5.7-fix-vrefbuffer-migrate.patch
+}
 
 src_configure() {
 	econf $(use_enable static-libs static) || die
