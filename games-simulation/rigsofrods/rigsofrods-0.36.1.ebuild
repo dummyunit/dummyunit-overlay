@@ -2,9 +2,9 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-inherit cmake-utils games
-
 EAPI=2
+
+inherit cmake-utils games
 
 MY_P=${PN}-source-${PV}
 S="${WORKDIR}/${PV}/build"
