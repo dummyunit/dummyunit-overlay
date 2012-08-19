@@ -1,10 +1,10 @@
 # Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-admin/conky/conky-1.8.1-r6.ebuild,v 1.8 2012/05/03 18:02:22 jdhore Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-admin/conky/conky-1.9.0.ebuild,v 1.4 2012/08/13 14:32:04 johu Exp $
 
-EAPI=2
+EAPI=4
 
-inherit autotools eutils
+inherit eutils
 
 DESCRIPTION="An advanced, highly configurable system monitor for X"
 HOMEPAGE="http://conky.sourceforge.net/"
@@ -12,14 +12,20 @@ SRC_URI="mirror://sourceforge/${PN}/${P}.tar.bz2"
 
 LICENSE="GPL-3 BSD LGPL-2.1 MIT"
 SLOT="0"
-KEYWORDS="alpha amd64 ppc ppc64 sparc x86"
+KEYWORDS="~alpha amd64 ~ppc ~ppc64 ~sparc x86"
 IUSE="apcupsd audacious curl debug eve hddtemp imlib iostats lua lua-cairo lua-imlib math moc mpd nano-syntax ncurses nvidia +portmon rss thinkpad truetype vim-syntax weather-metar weather-xoap wifi X xmms2"
 
 DEPEND_COMMON="
 	X? (
 		imlib? ( media-libs/imlib2 )
-		lua-cairo? ( >=dev-lua/toluapp-1.0.93 x11-libs/cairo[X] )
-		lua-imlib? ( >=dev-lua/toluapp-1.0.93 media-libs/imlib2 )
+		lua-cairo? (
+			>=dev-lua/toluapp-1.0.93
+			>=dev-lang/lua-5.1.4-r8
+			x11-libs/cairo[X] )
+		lua-imlib? (
+			>=dev-lua/toluapp-1.0.93
+			>=dev-lang/lua-5.1.4-r8
+			media-libs/imlib2 )
 		nvidia? ( media-video/nvidia-settings )
 		truetype? ( x11-libs/libXft >=media-libs/freetype-2 )
 		x11-libs/libX11
@@ -31,7 +37,7 @@ DEPEND_COMMON="
 	curl? ( net-misc/curl )
 	eve? ( net-misc/curl dev-libs/libxml2 )
 	portmon? ( dev-libs/glib )
-	lua? ( >=dev-lang/lua-5.1 )
+	lua? ( >=dev-lang/lua-5.1.4-r8 )
 	ncurses? ( sys-libs/ncurses )
 	rss? ( dev-libs/libxml2 net-misc/curl dev-libs/glib )
 	wifi? ( net-wireless/wireless-tools )
@@ -54,17 +60,9 @@ DEPEND="
 	"
 
 src_prepare() {
-	epatch "${FILESDIR}/${P}-nvidia-x.patch" \
-		"${FILESDIR}/${P}-xmms2.patch" \
-		"${FILESDIR}/${P}-secunia-SA43225.patch" \
-		"${FILESDIR}/${P}-acpitemp.patch" \
-		"${FILESDIR}/${P}-curl-headers.patch" \
-		"${FILESDIR}/${P}-maxinterfaces.patch" \
-		"${FILESDIR}/${P}-more-alignments.patch" \
-		"${FILESDIR}/${P}-utf8-scroll.patch" \
-		"${FILESDIR}/${P}-battery-time.patch" \
-		"${FILESDIR}/${P}-lua-5.2.patch"
-	eautoreconf
+	epatch "${FILESDIR}/${PN}-1.8.1-utf8-scroll.patch" \
+		"${FILESDIR}/${PN}-1.8.1-more-alignments.patch" \
+		"${FILESDIR}/${P}-ncurses.patch"
 }
 
 src_configure() {
@@ -105,21 +103,21 @@ src_configure() {
 }
 
 src_install() {
-	emake DESTDIR="${D}" install || die
-	dodoc ChangeLog AUTHORS TODO || die
-	dohtml doc/docs.html doc/config_settings.html doc/variables.html || die
+	default
+
+	dohtml doc/{config_settings.html,docs.html,lua.html,variables.html}
 
 	if use vim-syntax; then
 		insinto /usr/share/vim/vimfiles/ftdetect
-		doins "${S}"/extras/vim/ftdetect/conkyrc.vim || die
+		doins "${S}"/extras/vim/ftdetect/conkyrc.vim
 
 		insinto /usr/share/vim/vimfiles/syntax
-		doins "${S}"/extras/vim/syntax/conkyrc.vim || die
+		doins "${S}"/extras/vim/syntax/conkyrc.vim
 	fi
 
 	if use nano-syntax; then
 		insinto /usr/share/nano/
-		doins "${S}"/extras/nano/conky.nanorc || die
+		doins "${S}"/extras/nano/conky.nanorc
 	fi
 }
 
