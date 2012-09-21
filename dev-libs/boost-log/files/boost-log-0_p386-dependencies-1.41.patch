@@ -1,0 +1,36 @@
+--- boost-log.orig/boost-log/libs/log/build/Jamfile.v2	2012-09-20 16:12:19.992970378 +0400
++++ boost-log/boost-log/libs/log/build/Jamfile.v2	2012-09-20 18:29:42.536154596 +0400
+@@ -26,11 +26,7 @@
+         <toolset>msvc:<define>_SCL_SECURE_NO_DEPRECATE
+         <toolset>msvc:<define>_CRT_SECURE_NO_WARNINGS
+         <toolset>msvc:<define>_CRT_SECURE_NO_DEPRECATE
+-        <library>/boost/date_time//boost_date_time
+-        <library>/boost/filesystem//boost_filesystem
+-        <library>/boost/system//boost_system
+         <threading>single:<define>BOOST_LOG_NO_THREADS
+-        <threading>multi:<library>/boost/thread//boost_thread
+     ;
+ 
+ DEPENDS event_log_backend.cpp : simple_event_log.mc ;
+@@ -72,6 +68,13 @@
+         platform_log_sources
+     : ## requirements ##
+         <define>BOOST_LOG_BUILDING_THE_LIB=1
++        <threading>single:<find-shared-library>boost_date_time-1_41
++        <threading>single:<find-shared-library>boost_filesystem-1_41
++        <threading>single:<find-shared-library>boost_system-1_41
++        <threading>multi:<find-shared-library>boost_date_time-mt-1_41
++        <threading>multi:<find-shared-library>boost_filesystem-mt-1_41
++        <threading>multi:<find-shared-library>boost_system-mt-1_41
++        <threading>multi:<find-shared-library>boost_thread-mt-1_41
+     ;
+ 
+ lib boost_log_setup
+@@ -84,5 +87,6 @@
+         <link>shared:<define>BOOST_LOG_SETUP_DLL
+         <define>BOOST_LOG_SETUP_BUILDING_THE_LIB=1
+         <library>boost_log
+-        <library>/boost/regex//boost_regex
++        <threading>single:<find-shared-library>boost_regex-1_41
++        <threading>multi:<find-shared-library>boost_regex-mt-1_41
+     ;

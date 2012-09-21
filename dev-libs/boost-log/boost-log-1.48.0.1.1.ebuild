@@ -10,14 +10,25 @@ BOOST_P=boost_$(replace_all_version_separators _ ${BOOST_PV})
 MY_PV=$(get_version_component_range 4-)
 MY_P=${PN}-${MY_PV}
 
+if [[ ${MY_PV} == "9999" ]]; then
+	ESVN_REPO_URI="https://boost-log.svn.sourceforge.net/svnroot/boost-log/trunk/boost-log"
+	inherit subversion
+	KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-fbsd ~x86-fbsd"
+elif [[ ${MY_PV} == *_p* ]]; then
+	ESVN_REPO_URI="https://boost-log.svn.sourceforge.net/svnroot/boost-log/trunk/boost-log@${MY_PV##*_p}"
+	inherit subversion
+	KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-fbsd ~x86-fbsd"
+else
+	SRC_URI="mirror://sourceforge/${PN}/${MY_P}.zip"
+	KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-fbsd ~x86-fbsd"
+fi
+
 DESCRIPTION="Boost.Log"
 HOMEPAGE="http://sourceforge.net/projects/boost-log/"
-SRC_URI="mirror://sourceforge/${PN}/${MY_P}.zip
-	mirror://sourceforge/boost/${BOOST_P}.tar.bz2"
+SRC_URI="${SRC_URI} mirror://sourceforge/boost/${BOOST_P}.tar.bz2"
 
 LICENSE="Boost-1.0"
 SLOT="$(get_version_component_range 1-2 ${BOOST_PV})"
-KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-fbsd ~x86-fbsd"
 IUSE="debug doc +eselect static-libs"
 
 RDEPEND="dev-libs/boost:${SLOT}"
@@ -86,7 +97,11 @@ pkg_setup() {
 src_unpack() {
 	unpack ${A}
 	rm -r "${BOOST_P}"/{boost,libs} || die
-	cp -r "${MY_P}"/{boost,libs} "${BOOST_P}" || die
+	if [[ ${MY_PV} == "9999" ]] || [[ ${MY_PV} == *_p* ]]; then
+		subversion_src_unpack
+	else
+		cp -r "${MY_P}"/{boost,libs} "${BOOST_P}" || die
+	fi
 }
 
 src_prepare() {
