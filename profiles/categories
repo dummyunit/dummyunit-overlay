@@ -18,6 +18,5 @@ net-p2p
 net-print
 sys-apps
 sys-devel
-virtual
 x11-libs
 x11-terms
