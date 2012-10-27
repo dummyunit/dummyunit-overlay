@@ -17,8 +17,8 @@ IUSE=""
 
 DEPEND=">=sys-devel/gdb-6.5
 	|| (
+		>=x11-libs/motif-2.3:0
 		>=x11-libs/lesstif-0.89
-		>=x11-libs/openmotif-2.3:0
 	)
 	x11-libs/libX11
 	x11-libs/libXp"
