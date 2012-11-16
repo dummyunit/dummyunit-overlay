@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
-	<herd>no-herd</herd>
 	<maintainer>
 		<email>billie@gentoo.org</email>
 		<name>Daniel Pielmeier</name>
@@ -10,11 +9,6 @@
 		<email>brenden@rty.ca</email>
 		<name>Brenden Matthews</name>
 		<description>Upstream author</description>
-	</maintainer>
-	<maintainer>
-		<email>dummyunit@gmail.com</email>
-		<name>Stas Cymbalov</name>
-		<description>Overlay maintainer</description>
 	</maintainer>
 	<longdescription>Conky is a system monitor that sits in the corner of your desktop. It is a fork of Torsmo that is actually maintained.</longdescription>
 	<use>

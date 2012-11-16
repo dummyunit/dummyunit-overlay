@@ -2,9 +2,4 @@
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
 <herd>games</herd>
-	<maintainer>
-		<email>dummyunit@gmail.com</email>
-		<name>Stas Cymbalov</name>
-		<description>Overlay maintainer</description>
-	</maintainer>
 </pkgmetadata>

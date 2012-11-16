@@ -5,11 +5,6 @@
 	<maintainer>
 		<email>matsuu@gentoo.org</email>
 	</maintainer>
-	<maintainer>
-		<email>dummyunit@gmail.com</email>
-		<name>Stas Cymbalov</name>
-		<description>Overlay maintainer</description>
-	</maintainer>
 	<longdescription lang="en">
 		Distcc is a program to distribute compilation of C code across several
 		machines on a network.
