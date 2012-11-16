@@ -1,11 +1,11 @@
-# Copyright 1999-2011 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-devel/distcc/distcc-3.1-r5.ebuild,v 1.2 2011/03/28 22:37:44 eva Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-devel/distcc/distcc-3.1-r5.ebuild,v 1.4 2012/09/15 22:03:36 vapier Exp $
 
 EAPI="3"
 PYTHON_DEPEND="2"
 
-inherit eutils fdo-mime flag-o-matic multilib python toolchain-funcs
+inherit eutils fdo-mime flag-o-matic multilib python toolchain-funcs user
 
 DESCRIPTION="a program to distribute compilation of C code across several machines on a network"
 HOMEPAGE="http://distcc.org/"
@@ -30,7 +30,7 @@ RDEPEND="dev-libs/popt
 		x11-libs/gtk+:2
 	)"
 DEPEND="${RDEPEND}
-	dev-util/pkgconfig"
+	virtual/pkgconfig"
 RDEPEND="${RDEPEND}
 	!net-misc/pump
 	>=sys-devel/gcc-config-1.4.1
