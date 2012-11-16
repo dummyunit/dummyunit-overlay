@@ -12,7 +12,7 @@ SLOT="0"
 KEYWORDS="~x86"
 IUSE=""
 
-DEPEND="dev-perl/Data-Dumper
+DEPEND="perl-core/Data-Dumper
 	virtual/perl-Digest-MD5
 	dev-perl/autodie
 	virtual/perl-File-Spec
