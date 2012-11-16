@@ -7,7 +7,7 @@
 		<name>Stas Cymbalov</name>
 		<description>Overlay maintainer</description>
 	</maintainer>
-<use>
-	<flag name='eselect'>Run "eselect boost update" even if version is already selected</flag>
-</use>
+	<use>
+		<flag name="eselect">Run "eselect boost update" even if version is already selected</flag>
+	</use>
 </pkgmetadata>
