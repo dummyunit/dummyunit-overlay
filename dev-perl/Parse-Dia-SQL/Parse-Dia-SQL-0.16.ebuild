@@ -9,10 +9,10 @@ DESCRIPTION="Convert Dia class diagrams into SQL"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~x86"
+KEYWORDS="~x86 ~amd64"
 IUSE=""
 
-DEPEND="perl-core/Data-Dumper
+RDEPEND="perl-core/Data-Dumper
 	virtual/perl-Digest-MD5
 	dev-perl/autodie
 	virtual/perl-File-Spec
@@ -26,5 +26,6 @@ DEPEND="perl-core/Data-Dumper
 	dev-perl/Text-Table
 	dev-perl/XML-DOM
 	"
+DEPEND="${RDEPEND}"
 
 SRC_TEST="do"

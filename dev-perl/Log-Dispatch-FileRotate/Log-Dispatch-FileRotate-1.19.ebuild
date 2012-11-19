@@ -8,10 +8,11 @@ inherit perl-module
 DESCRIPTION="Log to files that archive/rotate themselves"
 
 SLOT="0"
-KEYWORDS="~x86"
+KEYWORDS="~x86 ~amd64"
 IUSE=""
 
-DEPEND="dev-perl/Log-Log4perl
+RDEPEND="dev-perl/Log-Log4perl
 	dev-perl/log-dispatch
 	dev-perl/DateManip
 	dev-perl/Params-Validate"
+DEPEND="${RDEPEND}"
