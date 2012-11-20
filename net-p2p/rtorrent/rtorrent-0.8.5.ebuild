@@ -20,9 +20,9 @@ COMMON_DEPEND=">=net-libs/libtorrent-0.12.${PV##*.}
 	xmlrpc? ( dev-libs/xmlrpc-c )"
 RDEPEND="${COMMON_DEPEND}
 	screen? ( app-misc/screen )
-	dtach? ( !screen? ( app-misc/dtach  ) )"
+	dtach? ( !screen? ( app-misc/dtach ) )"
 DEPEND="${COMMON_DEPEND}
-	dev-util/pkgconfig"
+	virtual/pkgconfig"
 
 PATCHES=( "${FILESDIR}/${PN}-0.8.2-gcc34.patch" )
 
