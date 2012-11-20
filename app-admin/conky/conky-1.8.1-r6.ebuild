@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/app-admin/conky/conky-1.8.1-r6.ebuild,v 1.8 2012/05/03 18:02:22 jdhore Exp $
 
-EAPI=2
+EAPI=4
 
 inherit autotools eutils
 
@@ -105,32 +105,33 @@ src_configure() {
 }
 
 src_install() {
-	emake DESTDIR="${D}" install || die
-	dodoc ChangeLog AUTHORS TODO || die
-	dohtml doc/docs.html doc/config_settings.html doc/variables.html || die
+	default
+
+	dohtml doc/{config_settings.html,docs.html,lua.html,variables.html}
 
 	if use vim-syntax; then
 		insinto /usr/share/vim/vimfiles/ftdetect
-		doins "${S}"/extras/vim/ftdetect/conkyrc.vim || die
+		doins "${S}"/extras/vim/ftdetect/conkyrc.vim
 
 		insinto /usr/share/vim/vimfiles/syntax
-		doins "${S}"/extras/vim/syntax/conkyrc.vim || die
+		doins "${S}"/extras/vim/syntax/conkyrc.vim
 	fi
 
 	if use nano-syntax; then
 		insinto /usr/share/nano/
-		doins "${S}"/extras/nano/conky.nanorc || die
+		doins "${S}"/extras/nano/conky.nanorc
 	fi
 }
 
 pkg_postinst() {
-	elog "You can find a sample configuration file at ${ROOT%/}/etc/conky/conky.conf."
-	elog "To customize, copy it to ~/.conkyrc and edit it to your liking."
-	elog
-	elog "For more info on Conky's features please look at the Changelog in"
-	elog "${ROOT%/}/usr/share/doc/${PF}. There are also pretty html docs available"
-	elog "on Conky's site or in ${ROOT%/}/usr/share/doc/${PF}/html."
-	elog
-	elog "Also see http://www.gentoo.org/doc/en/conky-howto.xml"
-	elog
+	if [[ -z "${REPLACING_VERSIONS}" ]]; then
+		elog "You can find sample configurations at ${ROOT%/}/usr/share/doc/${PF}."
+		elog "To customize, copy to ~/.conkyrc and edit it to your liking."
+		elog
+		elog "There are pretty html docs available at the conky homepage"
+		elog "or in ${ROOT%/}/usr/share/doc/${PF}/html."
+		elog
+		elog "Also see http://www.gentoo.org/doc/en/conky-howto.xml"
+		elog
+	fi
 }
