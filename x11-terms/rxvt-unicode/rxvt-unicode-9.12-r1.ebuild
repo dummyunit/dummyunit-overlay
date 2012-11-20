@@ -28,7 +28,7 @@ RDEPEND="x11-libs/libX11
 	pixbuf? ( x11-libs/gdk-pixbuf x11-libs/gtk+:2 )
 	kernel_Darwin? ( dev-perl/Mac-Pasteboard )"
 DEPEND="${RDEPEND}
-	dev-util/pkgconfig
+	virtual/pkgconfig
 	x11-proto/xproto"
 
 REQUIRED_USE="vanilla? ( !alt-font-width focused-urgency !force-hints !wcwidth )"

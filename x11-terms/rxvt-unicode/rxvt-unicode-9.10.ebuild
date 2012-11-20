@@ -24,7 +24,7 @@ RDEPEND="x11-libs/libX11
 	perl? ( dev-lang/perl )
 	pixbuf? ( x11-libs/gdk-pixbuf x11-libs/gtk+:2 )"
 DEPEND="${RDEPEND}
-	dev-util/pkgconfig
+	virtual/pkgconfig
 	x11-proto/xproto"
 
 src_prepare() {
