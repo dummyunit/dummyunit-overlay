@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI="2"
+EAPI=1
 inherit eutils fdo-mime flag-o-matic multilib toolchain-funcs user
 
 DESCRIPTION="a program to distribute compilation of C code across several machines on a network"
