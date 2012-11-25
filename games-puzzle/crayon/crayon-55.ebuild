@@ -20,6 +20,7 @@ RDEPEND="
 	amd64? (
 		app-emulation/emul-linux-x86-opengl
 		app-emulation/emul-linux-x86-qtlibs
+		app-emulation/emul-linux-x86-sdl
 		app-emulation/emul-linux-x86-xlibs
 	)
 	x86? (
