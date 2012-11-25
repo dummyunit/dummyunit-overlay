@@ -9,6 +9,7 @@ inherit games
 DESCRIPTION="Crayon Physics Deluxe is a 2D physics puzzle/sandbox game"
 HOMEPAGE="http://crayonphysics.com/"
 SRC_URI="crayon_physics_deluxe-linux-release${PV}.tar.gz"
+RESTRICT="fetch"
 
 LICENSE="as-is"
 SLOT="0"
