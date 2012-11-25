@@ -28,7 +28,7 @@ RDEPEND="
 		virtual/opengl
 		virtual/glu
 		x11-libs/qt-core:4
-		x11-libs/qt-qui:4
+		x11-libs/qt-gui:4
 		x11-libs/libX11
 	)
 "
