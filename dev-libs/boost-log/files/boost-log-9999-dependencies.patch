@@ -16,13 +16,13 @@
      : ## requirements ##
          <define>BOOST_LOG_BUILDING_THE_LIB=1
          <define>BOOST_THREAD_DONT_USE_CHRONO=1 # Don't introduce false dependency on Boost.Chrono
-+        <threading>single:<find-shared-library>boost_date_time-1_46
-+        <threading>single:<find-shared-library>boost_filesystem-1_46
-+        <threading>single:<find-shared-library>boost_system-1_46
-+        <threading>multi:<find-shared-library>boost_date_time-mt-1_46
-+        <threading>multi:<find-shared-library>boost_filesystem-mt-1_46
-+        <threading>multi:<find-shared-library>boost_system-mt-1_46
-+        <threading>multi:<find-shared-library>boost_thread-mt-1_46
++        <threading>single:<find-shared-library>boost_date_time
++        <threading>single:<find-shared-library>boost_filesystem
++        <threading>single:<find-shared-library>boost_system
++        <threading>multi:<find-shared-library>boost_date_time-mt
++        <threading>multi:<find-shared-library>boost_filesystem-mt
++        <threading>multi:<find-shared-library>boost_system-mt
++        <threading>multi:<find-shared-library>boost_thread-mt
          <logapi>winnt
      ;
  
@@ -30,13 +30,13 @@
      : ## requirements ##
          <define>BOOST_LOG_BUILDING_THE_LIB=1
          <define>BOOST_THREAD_DONT_USE_CHRONO=1 # Don't introduce false dependency on Boost.Chrono
-+        <threading>single:<find-shared-library>boost_date_time-1_46
-+        <threading>single:<find-shared-library>boost_filesystem-1_46
-+        <threading>single:<find-shared-library>boost_system-1_46
-+        <threading>multi:<find-shared-library>boost_date_time-mt-1_46
-+        <threading>multi:<find-shared-library>boost_filesystem-mt-1_46
-+        <threading>multi:<find-shared-library>boost_system-mt-1_46
-+        <threading>multi:<find-shared-library>boost_thread-mt-1_46
++        <threading>single:<find-shared-library>boost_date_time
++        <threading>single:<find-shared-library>boost_filesystem
++        <threading>single:<find-shared-library>boost_system
++        <threading>multi:<find-shared-library>boost_date_time-mt
++        <threading>multi:<find-shared-library>boost_filesystem-mt
++        <threading>multi:<find-shared-library>boost_system-mt
++        <threading>multi:<find-shared-library>boost_thread-mt
          <logapi>unix
      ;
  
