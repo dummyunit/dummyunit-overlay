@@ -1,6 +1,6 @@
 # Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-emulation/wine/wine-1.3.28.ebuild,v 1.5 2012/01/14 03:20:51 tetromino Exp $
+# $Header: /var/cvsroot/gentoo-x86/app-emulation/wine/wine-1.3.28.ebuild,v 1.13 2012/10/26 16:46:37 tetromino Exp $
 
 EAPI="4"
 
@@ -13,7 +13,7 @@ if [[ ${PV} == "9999" ]] ; then
 	#KEYWORDS=""
 else
 	MY_P="${PN}-${PV/_/-}"
-	SRC_URI="mirror://sourceforge/${PN}/${MY_P}.tar.bz2"
+	SRC_URI="mirror://sourceforge/${PN}/Source/${MY_P}.tar.bz2"
 	KEYWORDS="-* ~amd64 ~x86 ~x86-fbsd"
 	S=${WORKDIR}/${MY_P}
 fi
@@ -23,8 +23,8 @@ DESCRIPTION="free implementation of Windows(tm) on Unix"
 HOMEPAGE="http://www.winehq.org/"
 SRC_URI="${SRC_URI}
 	gecko? (
-		mirror://sourceforge/wine/wine_gecko-${GV}-x86.msi
-		win64? ( mirror://sourceforge/wine/wine_gecko-${GV}-x86_64.msi )
+		mirror://sourceforge/${PN}/Wine%20Gecko/${GV}/wine_gecko-${GV}-x86.msi
+		win64? ( mirror://sourceforge/${PN}/Wine%20Gecko/${GV}/wine_gecko-${GV}-x86_64.msi )
 	)"
 
 LICENSE="LGPL-2.1"
@@ -56,20 +56,22 @@ RDEPEND="truetype? ( >=media-libs/freetype-2.0.0 media-fonts/corefonts )
 	openal? ( media-libs/openal )
 	dbus? ( sys-apps/dbus )
 	gnutls? ( net-libs/gnutls )
-	gstreamer? ( media-libs/gstreamer media-libs/gst-plugins-base )
+	gstreamer? ( media-libs/gstreamer:0.10 media-libs/gst-plugins-base:0.10 )
 	X? (
 		x11-libs/libXcursor
 		x11-libs/libXrandr
 		x11-libs/libXi
 		x11-libs/libXmu
 		x11-libs/libXxf86vm
-		x11-apps/xmessage
 	)
 	xinerama? ( x11-libs/libXinerama )
 	alsa? ( media-libs/alsa-lib )
 	cups? ( net-print/cups )
 	opencl? ( virtual/opencl )
-	opengl? ( virtual/opengl )
+	opengl? (
+		virtual/glu
+		virtual/opengl
+	)
 	gsm? ( media-sound/gsm )
 	jpeg? ( virtual/jpeg )
 	ldap? ( net-nds/openldap )
@@ -93,6 +95,7 @@ DEPEND="${RDEPEND}
 	)
 	xinerama? ( x11-proto/xineramaproto )
 	!hardened? ( sys-devel/prelink )
+	virtual/pkgconfig
 	virtual/yacc
 	sys-devel/flex"
 
@@ -110,8 +113,13 @@ src_unpack() {
 }
 
 src_prepare() {
+	local md5="$(md5sum server/protocol.def)"
 	epatch "${FILESDIR}"/${PN}-1.1.15-winegcc.patch #260726
 	epatch_user #282735
+	if [[ "$(md5sum server/protocol.def)" != "${md5}" ]]; then
+		einfo "server/protocol.def was patched; running tools/make_requests"
+		tools/make_requests || die #432348
+	fi
 	sed -i '/^UPDATE_DESKTOP_DATABASE/s:=.*:=true:' tools/Makefile.in || die
 	sed -i '/^MimeType/d' tools/wine.desktop || die #117785
 }

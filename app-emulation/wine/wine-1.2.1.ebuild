@@ -1,6 +1,6 @@
 # Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-emulation/wine/wine-1.2.1.ebuild,v 1.14 2012/01/14 03:20:51 tetromino Exp $
+# $Header: /tmp/app-emulation-wine/wine/Attic/wine-1.2.1.ebuild,v 1.21 2012/08/18 00:03:20 tetromino dead $
 
 EAPI="4"
 
@@ -15,7 +15,7 @@ else
 	AUTOTOOLS_AUTO_DEPEND="no"
 	inherit autotools
 	MY_P="${PN}-${PV/_/-}"
-	SRC_URI="mirror://sourceforge/${PN}/${MY_P}.tar.bz2"
+	SRC_URI="mirror://sourceforge/${PN}/Source/${MY_P}.tar.bz2"
 	KEYWORDS="-* amd64 x86 ~x86-fbsd"
 	S=${WORKDIR}/${MY_P}
 fi
@@ -25,7 +25,7 @@ GV="1.0.0-x86"
 DESCRIPTION="free implementation of Windows(tm) on Unix"
 HOMEPAGE="http://www.winehq.org/"
 SRC_URI="${SRC_URI}
-	gecko? ( mirror://sourceforge/wine/wine_gecko-${GV}.cab )"
+	gecko? ( mirror://sourceforge/${PN}/Wine%20Gecko/${GV}/wine_gecko-${GV}.cab )"
 
 LICENSE="LGPL-2.1"
 SLOT="0"
@@ -37,7 +37,7 @@ MLIB_DEPS="amd64? (
 	truetype? ( >=app-emulation/emul-linux-x86-xlibs-2.1 )
 	X? (
 		>=app-emulation/emul-linux-x86-xlibs-2.1
-		>=app-emulation/emul-linux-x86-soundlibs-2.1[pulseaudio?]
+		>=app-emulation/emul-linux-x86-soundlibs-2.1[pulseaudio(+)?]
 	)
 	mp3? ( app-emulation/emul-linux-x86-soundlibs )
 	openal? ( app-emulation/emul-linux-x86-sdl )
@@ -63,7 +63,6 @@ RDEPEND="truetype? ( >=media-libs/freetype-2.0.0 media-fonts/corefonts )
 		x11-libs/libXi
 		x11-libs/libXmu
 		x11-libs/libXxf86vm
-		x11-apps/xmessage
 	)
 	xinerama? ( x11-libs/libXinerama )
 	alsa? ( media-libs/alsa-lib )
@@ -94,6 +93,7 @@ DEPEND="${RDEPEND}
 	)
 	xinerama? ( x11-proto/xineramaproto )
 	!hardened? ( sys-devel/prelink )
+	virtual/pkgconfig
 	virtual/yacc
 	sys-devel/flex"
 
