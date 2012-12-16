@@ -9,6 +9,7 @@ Think of Wine as a compatibility layer for running Windows programs. Wine does n
 </longdescription>
 	<use>
 		<flag name="capi">Enable ISDN support via CAPI</flag>
+		<flag name="corefonts">Pull <pkg>media-fonts/corefonts</pkg></flag>
 		<flag name="custom-cflags">Bypass strip-flags; use are your own peril</flag>
 		<flag name="gecko">Add support for the Gecko engine when using iexplore</flag>
 		<flag name="mono">Add support for .NET using Wine's Mono add-on</flag>
