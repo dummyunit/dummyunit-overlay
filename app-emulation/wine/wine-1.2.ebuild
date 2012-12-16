@@ -14,7 +14,7 @@ if [[ ${PV} == "9999" ]] ; then
 	#KEYWORDS=""
 else
 	MY_P="${PN}-${PV/_/-}"
-	SRC_URI="mirror://sourceforge/${PN}/${MY_P}.tar.bz2"
+	SRC_URI="mirror://sourceforge/${PN}/Source/${MY_P}.tar.bz2"
 	KEYWORDS="-* amd64 x86 ~x86-fbsd"
 	S=${WORKDIR}/${MY_P}
 fi
@@ -24,7 +24,7 @@ GV="1.0.0-x86"
 DESCRIPTION="free implementation of Windows(tm) on Unix"
 HOMEPAGE="http://www.winehq.org/"
 SRC_URI="${SRC_URI}
-	gecko? ( mirror://sourceforge/wine/wine_gecko-${GV}.cab )
+	gecko? ( mirror://sourceforge/${PN}/Wine%20Gecko/${GV}/wine_gecko-${GV}.cab )
 	pulseaudio? ( `pulse_patches http://art.ified.ca/downloads/winepulse` )"
 
 LICENSE="LGPL-2.1"
@@ -52,7 +52,6 @@ RDEPEND="truetype? (
 		x11-libs/libXi
 		x11-libs/libXmu
 		x11-libs/libXxf86vm
-		x11-apps/xmessage
 	)
 	xinerama? ( x11-libs/libXinerama )
 	alsa? ( media-libs/alsa-lib )
@@ -75,7 +74,7 @@ RDEPEND="truetype? (
 		truetype? ( >=app-emulation/emul-linux-x86-xlibs-2.1 )
 		X? (
 			>=app-emulation/emul-linux-x86-xlibs-2.1
-			>=app-emulation/emul-linux-x86-soundlibs-2.1[pulseaudio?]
+			>=app-emulation/emul-linux-x86-soundlibs-2.1[pulseaudio(+)?]
 		)
 		mp3? ( app-emulation/emul-linux-x86-soundlibs )
 		openal? ( app-emulation/emul-linux-x86-sdl )
@@ -94,6 +93,7 @@ DEPEND="${RDEPEND}
 		x11-proto/xf86vidmodeproto
 	)
 	xinerama? ( x11-proto/xineramaproto )
+	virtual/pkgconfig
 	virtual/yacc
 	sys-devel/flex"
 
