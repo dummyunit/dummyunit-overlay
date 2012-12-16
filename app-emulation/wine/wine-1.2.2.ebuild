@@ -72,7 +72,10 @@ RDEPEND="truetype? (
 	alsa? ( media-libs/alsa-lib )
 	nas? ( media-libs/nas )
 	cups? ( net-print/cups )
-	opengl? ( virtual/opengl )
+	opengl? (
+		virtual/glu
+		virtual/opengl
+	)
 	pulseaudio? ( media-sound/pulseaudio )
 	gsm? ( media-sound/gsm )
 	jpeg? ( virtual/jpeg )
@@ -114,12 +117,17 @@ src_unpack() {
 }
 
 src_prepare() {
+	local md5="$(md5sum server/protocol.def)"
 	if use pulseaudio ; then
 		EPATCH_OPTS=-p1 epatch `pulse_patches "${DISTDIR}"`
 		eautoreconf
 	fi
 	epatch "${FILESDIR}"/${PN}-1.1.15-winegcc.patch #260726
 	epatch_user #282735
+	if [[ "$(md5sum server/protocol.def)" != "${md5}" ]]; then
+		einfo "server/protocol.def was patched; running tools/make_requests"
+		tools/make_requests || die #432348
+	fi
 	sed -i '/^UPDATE_DESKTOP_DATABASE/s:=.*:=true:' tools/Makefile.in || die
 	sed -i '/^MimeType/d' tools/wine.desktop || die #117785
 }
