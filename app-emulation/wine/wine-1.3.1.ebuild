@@ -26,7 +26,7 @@ SRC_URI="${SRC_URI}
 
 LICENSE="LGPL-2.1"
 SLOT="0"
-IUSE="alsa capi +corefonts cups custom-cflags dbus elibc_glibc fontconfig +gecko gnutls gphoto2 gsm jack jpeg lcms ldap mp3 nas ncurses openal +opengl +oss +perl png samba scanner ssl test +threads +truetype v4l +win32 +win64 +X xcomposite xinerama xml"
+IUSE="alsa capi +corefonts cups custom-cflags dbus elibc_glibc fontconfig +gecko gnutls gphoto2 gsm jack jpeg lcms ldap mp3 nas ncurses openal +opengl +oss +perl png +prelink samba scanner ssl test +threads +truetype v4l +win32 +win64 +X xcomposite xinerama xml"
 REQUIRED_USE="elibc_glibc? ( threads )"
 RESTRICT="test" #72375
 
@@ -93,6 +93,7 @@ DEPEND="${RDEPEND}
 		x11-proto/xf86vidmodeproto
 	)
 	xinerama? ( x11-proto/xineramaproto )
+	prelink? ( sys-devel/prelink )
 	virtual/pkgconfig
 	virtual/yacc
 	sys-devel/flex"
