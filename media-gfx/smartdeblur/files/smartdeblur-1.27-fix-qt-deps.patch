@@ -1,0 +1,12 @@
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -10,9 +10,7 @@ include(CPack)
+ #------------------------------------------------------------------------------
+ # Additional Qt libraries
+ #
+-set(QT_USE_QT3SUPPORT TRUE)
+ set(QT_USE_QTNETWORK TRUE)
+-set(QT_USE_QTWEBKIT TRUE)
+ set(QT_USE_QTXML TRUE)
+ 
+ #------------------------------------------------------------------------------
