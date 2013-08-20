@@ -11,7 +11,7 @@ HOMEPAGE="http://www.cogsgame.com/"
 SRC_URI="${PN}_${PV}_all.tar.gz"
 RESTRICT="fetch"
 
-LICENSE="as-is"
+LICENSE="all-rights-reserved"
 SLOT="0"
 KEYWORDS="-* ~amd64 ~x86"
 IUSE=""
