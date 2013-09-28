@@ -16,8 +16,8 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 IUSE="+latex lua python"
 
-RDEPEND=">=x11-libs/qt-core-4.5.2
-	>=x11-libs/qt-gui-4.5.2
+RDEPEND=">=dev-qt/qtcore-4.5.2:4
+	>=dev-qt/qtgui-4.5.2:4
 	>=app-text/poppler-0.10.5[qt4]
 	>=app-text/hunspell-1.2.8
 	lua? ( dev-lang/lua )
