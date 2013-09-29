@@ -1,0 +1,30 @@
+--- CMakeLists.txt.orig	2013-09-29 06:05:36.703624678 +0400
++++ CMakeLists.txt	2013-09-29 06:05:24.890629344 +0400
+@@ -117,12 +117,12 @@
+ ENDIF ()
+ 
+ IF (UNIX AND NOT APPLE)
+-  SET(TeXworks_HELP_DIR share/doc/texworks-help CACHE PATH "Path where TeXworks looks for help files")
+-  SET(TeXworks_DIC_DIR /usr/share/myspell/dicts CACHE PATH "Path where TeXworks looks for spellchecking dictionaries")
+-  SET(TeXworks_DOCS_DIR share/doc/texworks CACHE PATH "Path in which documentation files are installed")
+-  SET(TeXworks_ICON_DIR share/pixmaps CACHE PATH "Path in which icons are installed")
+-  SET(TeXworks_MAN_DIR share/man/man1 CACHE PATH "Path in which manpages are installed")
+-  SET(TeXworks_DESKTOP_DIR share/applications CACHE PATH "Path in which .desktop files are installed")
++  SET(TeXworks_HELP_DIR share/doc/texworks-help CACHE STRING "Path where TeXworks looks for help files")
++  SET(TeXworks_DIC_DIR share/myspell/dicts CACHE STRING "Path where TeXworks looks for spellchecking dictionaries")
++  SET(TeXworks_DOCS_DIR share/doc/texworks CACHE STRING "Path in which documentation files are installed")
++  SET(TeXworks_ICON_DIR share/pixmaps CACHE STRING "Path in which icons are installed")
++  SET(TeXworks_MAN_DIR share/man/man1 CACHE STRING "Path in which manpages are installed")
++  SET(TeXworks_DESKTOP_DIR share/applications CACHE STRING "Path in which .desktop files are installed")
+   MARK_AS_ADVANCED(TeXworks_HELP_DIR)
+   MARK_AS_ADVANCED(TeXworks_DIC_DIR)
+   MARK_AS_ADVANCED(TeXworks_DOCS_DIR)
+@@ -255,7 +255,7 @@
+ ELSE ()
+   # Set the plugin installation path. This is a good default for UNIX-like
+   # systems, but is not appropriate for Windows.
+-  SET(TeXworks_PLUGIN_DIR lib/texworks CACHE PATH "Path where TeXworks looks for plugins")
++  SET(TeXworks_PLUGIN_DIR lib/texworks CACHE STRING "Path where TeXworks looks for plugins")
+   MARK_AS_ADVANCED(TeXworks_PLUGIN_DIR)
+ ENDIF ()
+ 
