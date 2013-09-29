@@ -4,7 +4,7 @@
 
 EAPI=2
 
-USE_RUBY="ruby18 ree18"
+USE_RUBY="ruby18"
 
 RUBY_FAKEGEM_TASK_DOC="" # docs building broken
 RUBY_FAKEGEM_EXTRADOC="README HISTORY.txt"
