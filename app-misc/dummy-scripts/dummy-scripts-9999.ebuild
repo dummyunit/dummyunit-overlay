@@ -1,13 +1,11 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
 EAPI=5
 
-inherit cmake-utils git-2
-
-EGIT_PROJECT="${PN}"
 EGIT_REPO_URI="git://dummyunit.homeftp.net/scripts"
+inherit cmake-utils git-r3
 
 DESCRIPTION="Collection of useful scripts"
 HOMEPAGE="http://dummyunit.homeftp.net/git/?p=scripts.git;a=summary"
