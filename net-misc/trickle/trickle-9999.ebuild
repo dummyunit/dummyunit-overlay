@@ -19,6 +19,6 @@ RDEPEND="dev-libs/libevent"
 DEPEND="${RDEPEND}"
 
 src_prepare() {
-	sed -ie '/overload_DATA/d' Makefile.am || die 'sed failed'
+	sed -ie '/^overload_DATA *=/d' Makefile.am || die 'sed failed'
 	eautoreconf
 }
