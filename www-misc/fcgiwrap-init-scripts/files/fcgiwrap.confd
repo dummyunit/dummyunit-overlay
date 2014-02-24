@@ -1,0 +1,6 @@
+# Run fcgiwrap as this user/group (default: nobody)
+#FCGIWRAP_USER=
+#FCGIWRAP_GROUP=
+
+# Additional options to pass to fcgiwrap
+#FCGIWRAP_OPTIONS=

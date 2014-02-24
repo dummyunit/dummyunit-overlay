@@ -1,0 +1,26 @@
+#!/sbin/runscript
+# Copyright 1999-2014 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+: ${FCGIWRAP_USER:=nobody}
+: ${FCGIWRAP_GROUP:=nobody}
+
+pidfile="/run/fcgiwrap/fcgiwrap.pid"
+socket="/run/fcgiwrap/fcgiwrap.socket"
+command="/usr/sbin/fcgiwrap"
+command_args="-s unix:${socket} ${FCGIWRAP_OPTIONS}"
+command_background=yes
+start_stop_daemon_args="--user \"${FCGIWRAP_USER}\" --group \"${FCGIWRAP_GROUP}\""
+
+depend() {
+	before apache2 lighttpd nginx
+}
+
+start_pre() {
+	checkpath --directory --mode 0755 --owner "${FCGIWRAP_USER}:${FCGIWRAP_GROUP}" "${socket%/*}"
+}
+
+stop_post() {
+	rm -f "${socket}"
+}
