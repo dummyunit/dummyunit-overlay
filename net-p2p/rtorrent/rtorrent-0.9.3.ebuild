@@ -4,7 +4,7 @@
 
 EAPI=4
 
-inherit autotools-utils eutils
+inherit eutils
 
 DESCRIPTION="BitTorrent Client using libtorrent"
 HOMEPAGE="http://libtorrent.rakshasa.no/"
@@ -12,10 +12,10 @@ SRC_URI="http://libtorrent.rakshasa.no/downloads/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="amd64 ~arm hppa ~ia64 ppc ppc64 ~sparc x86 ~x86-fbsd"
-IUSE="color screen dtach debug ipv6 test xmlrpc"
+KEYWORDS="~amd64 ~arm ~hppa ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd ~amd64-linux ~arm-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris ~x64-solaris"
+IUSE="screen dtach debug ipv6 test xmlrpc"
 
-COMMON_DEPEND="~net-libs/libtorrent-0.12.${PV##*.}
+COMMON_DEPEND="~net-libs/libtorrent-0.13.${PV##*.}
 	>=dev-libs/libsigc++-2.2.2:2
 	>=net-misc/curl-7.19.1
 	sys-libs/ncurses
@@ -27,32 +27,27 @@ DEPEND="${COMMON_DEPEND}
 	test? ( dev-util/cppunit )
 	virtual/pkgconfig"
 
-RESTRICT=test
+DOCS=( doc/rtorrent.rc )
 
 src_prepare() {
-	local PATCHES=(
-		"${FILESDIR}"/${P}-ncurses.patch
-	)
-	autotools-utils_src_prepare
+	# bug #358271
+	epatch "${FILESDIR}"/${PN}-0.9.1-ncurses.patch
 
-	use color && EPATCH_OPTS="-p1" epatch "${FILESDIR}"/${P}-canvas-fix.patch
+	# upstream forgot to include
+	cp ${FILESDIR}/rtorrent.1 ${S}/doc/ || die
 }
 
 src_configure() {
-	local myeconfargs=(
-		--disable-dependency-tracking
-		$(use_enable debug)
-		$(use_enable ipv6)
+	# configure needs bash or script bombs out on some null shift, bug #291229
+	CONFIG_SHELL=${BASH} econf \
+		--disable-dependency-tracking \
+		$(use_enable debug) \
+		$(use_enable ipv6) \
 		$(use_with xmlrpc xmlrpc-c)
-	)
-
-	autotools-utils_src_configure
 }
 
 src_install() {
-	local DOCS=( AUTHORS README TODO doc/rtorrent.rc )
-
-	autotools-utils_src_install
+	default
 	doman doc/rtorrent.1
 
 	if use screen; then
@@ -67,15 +62,6 @@ src_install() {
 }
 
 pkg_postinst() {
-	if use color; then
-		elog "rtorrent colors patch"
-		elog "Set colors using the options below in .rtorrent.rc:"
-		elog "Options: done_fg_color, done_bg_color, active_fg_color, active_bg_color"
-		elog "Colors: 0 = black, 1 = red, 2 = green, 3 = yellow, 4 = blue,"
-		elog "5 = magenta, 6 = cyan and 7 = white"
-		elog "Example: done_fg_color = 1"
-	fi
-
 	if use screen || use dtach; then
 		enewgroup p2p
 		enewuser p2p -1 -1 /home/p2p p2p
