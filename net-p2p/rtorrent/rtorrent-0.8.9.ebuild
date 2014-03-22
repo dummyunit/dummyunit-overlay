@@ -4,7 +4,7 @@
 
 EAPI=4
 
-inherit autotools-utils eutils
+inherit autotools-utils eutils user
 
 DESCRIPTION="BitTorrent Client using libtorrent"
 HOMEPAGE="http://libtorrent.rakshasa.no/"

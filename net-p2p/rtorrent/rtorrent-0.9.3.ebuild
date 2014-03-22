@@ -4,7 +4,7 @@
 
 EAPI=4
 
-inherit eutils
+inherit eutils user
 
 DESCRIPTION="BitTorrent Client using libtorrent"
 HOMEPAGE="http://libtorrent.rakshasa.no/"
