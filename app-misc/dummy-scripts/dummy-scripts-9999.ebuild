@@ -4,11 +4,11 @@
 
 EAPI=5
 
-EGIT_REPO_URI="git://dummyunit.homeftp.net/scripts"
+EGIT_REPO_URI="git://dummyunit.dtdns.net/scripts"
 inherit cmake-utils git-r3
 
 DESCRIPTION="Collection of useful scripts"
-HOMEPAGE="http://dummyunit.homeftp.net/git/?p=scripts.git;a=summary"
+HOMEPAGE="http://dummyunit.dtdns.net/git/?p=scripts.git;a=summary"
 
 LICENSE="GPL-3"
 SLOT="0"
