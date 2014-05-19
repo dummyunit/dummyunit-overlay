@@ -5,7 +5,7 @@
 EAPI=2
 
 DESCRIPTION="Init script that changes config files according to runlevel changes"
-HOMEPAGE="http://dummyunit.homeftp.net/git/?p=dummyunit-overlay.git;a=tree;f=sys-apps/runlevel-tools"
+HOMEPAGE="http://dummyunit.dtdns.net/git/?p=dummyunit-overlay.git;a=tree;f=sys-apps/runlevel-tools"
 SRC_URI=""
 
 LICENSE="GPL-3"
