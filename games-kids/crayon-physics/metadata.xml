@@ -6,4 +6,7 @@
 		<name>Stas Cymbalov</name>
 		<description>Overlay maintainer</description>
 	</maintainer>
+	<use>
+		<flag name='bundled-libs'>Use the upstream provided bundled libraries.</flag>
+	</use>
 </pkgmetadata>

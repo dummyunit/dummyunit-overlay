@@ -13,29 +13,37 @@ SRC_URI="crayon_physics_deluxe-linux-release${PV}.tar.gz"
 LICENSE="CRAYON-PHYSICS"
 SLOT="0"
 KEYWORDS="-* amd64 x86"
-IUSE=""
+IUSE="bundled-libs"
 RESTRICT="bindist fetch splitdebug"
 
 MYGAMEDIR=${GAMES_PREFIX_OPT}/${PN}
-QA_PREBUILT="${MYGAMEDIR#/}/crayon"
+QA_PREBUILT="${MYGAMEDIR#/}/crayon
+	${MYGAMEDIR#/}/lib32/*"
 
 RDEPEND="
-	virtual/opengl
-	amd64? (
-		app-emulation/emul-linux-x86-opengl
-		app-emulation/emul-linux-x86-qtlibs
-		app-emulation/emul-linux-x86-sdl
-		app-emulation/emul-linux-x86-xlibs
+	|| (
+		(
+			virtual/opengl[abi_x86_32(-)]
+			virtual/glu[abi_x86_32(-)]
+			!bundled-libs? (
+				media-libs/libsdl:0[X,sound,video,opengl,abi_x86_32(-)]
+				media-libs/sdl-image[png,jpeg,abi_x86_32(-)]
+				media-libs/sdl-mixer[vorbis,wav,abi_x86_32(-)]
+				dev-qt/qtcore:4[abi_x86_32(-)]
+				dev-qt/qtgui:4[abi_x86_32(-)]
+				x11-libs/libX11[abi_x86_32(-)]
+			)
+		)
+		amd64? (
+			app-emulation/emul-linux-x86-opengl[-abi_x86_32(-)]
+			!bundled-libs? (
+				app-emulation/emul-linux-x86-sdl[-abi_x86_32(-)]
+				app-emulation/emul-linux-x86-qtlibs[-abi_x86_32(-)]
+				app-emulation/emul-linux-x86-xlibs[-abi_x86_32(-)]
+			)
+		)
 	)
-	x86? (
-		media-libs/libsdl:0[X,audio,video,opengl]
-		media-libs/sdl-image[png,jpeg]
-		media-libs/sdl-mixer[vorbis,wav]
-		virtual/glu
-		dev-qt/qtcore:4
-		dev-qt/qtgui:4
-		x11-libs/libX11
-	)"
+"
 
 S=${WORKDIR}/CrayonPhysicsDeluxe
 
@@ -46,13 +54,20 @@ pkg_nofetch() {
 	einfo
 }
 
+src_prepare() {
+	if use bundled-libs ; then
+		mv lib32/_libSDL-1.2.so.0 lib32/libSDL-1.2.so.0 || die
+	fi
+}
+
 src_install() {
 	insinto "${MYGAMEDIR}"
+	use bundled-libs && doins -r lib32
 	doins -r cache data crayon autoexec.txt version.xml
 
 	newicon -s 256 icon.png ${PN}.png
 	make_desktop_entry ${PN}
-	games_make_wrapper ${PN} "./crayon" "${MYGAMEDIR}"
+	games_make_wrapper ${PN} "./crayon" "${MYGAMEDIR}" "${MYGAMEDIR}/lib32"
 
 	dodoc changelog.txt linux_hotfix_notes.txt
 	dohtml readme.html
