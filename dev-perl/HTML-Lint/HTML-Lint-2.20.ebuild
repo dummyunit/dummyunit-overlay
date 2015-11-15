@@ -1,6 +1,6 @@
 # Copyright 2015 Stanislav Cymbalov
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
 EAPI=5
 
