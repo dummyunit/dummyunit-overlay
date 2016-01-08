@@ -11,7 +11,7 @@
 	Console BitTorrent client using ncurses based on libtorrent written in C++.
 </longdescription>
 	<use>
-		<flag name="dtach">Uses <pkg>app-misc/dtach</pkg> to daemonize this application</flag>
-		<flag name="screen">Uses <pkg>app-misc/screen</pkg> to daemonize this application</flag>
+		<flag name="daemon">Uses <pkg>app-misc/screen</pkg> to daemonize this application</flag>
+		<flag name="dtach">Use <pkg>app-misc/dtach</pkg> instead of <pkg>app-misc/screen</pkg></flag>
 	</use>
 </pkgmetadata>

@@ -13,7 +13,7 @@ SRC_URI="http://libtorrent.rakshasa.no/downloads/${P}.tar.gz"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~hppa ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd ~amd64-linux ~arm-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris ~x64-solaris"
-IUSE="screen dtach debug ipv6 test xmlrpc"
+IUSE="daemon dtach debug ipv6 test xmlrpc"
 
 COMMON_DEPEND="~net-libs/libtorrent-0.13.${PV##*.}
 	>=dev-libs/libsigc++-2.2.2:2
@@ -21,8 +21,7 @@ COMMON_DEPEND="~net-libs/libtorrent-0.13.${PV##*.}
 	sys-libs/ncurses
 	xmlrpc? ( dev-libs/xmlrpc-c )"
 RDEPEND="${COMMON_DEPEND}
-	screen? ( app-misc/screen )
-	dtach? ( !screen? ( app-misc/dtach ) )"
+	daemon? ( dtach? ( app-misc/dtach ) !dtach? ( app-misc/screen ) )"
 DEPEND="${COMMON_DEPEND}
 	test? ( dev-util/cppunit )
 	virtual/pkgconfig"
@@ -50,25 +49,27 @@ src_install() {
 	default
 	doman doc/rtorrent.1
 
-	if use screen; then
-		newinitd "${FILESDIR}/rtorrentd.init.screen" rtorrentd
-		newconfd "${FILESDIR}/rtorrentd.conf.screen" rtorrentd
-	elif use dtach; then
-		newinitd "${FILESDIR}/rtorrentd.init.dtach" rtorrentd
-		newconfd "${FILESDIR}/rtorrentd.conf.dtach" rtorrentd
-		exeinto /usr/bin
-		doexe "${FILESDIR}/rtorrent-attach"
+	if use daemon; then
+		if use dtach; then
+			newinitd "${FILESDIR}/rtorrentd.init.dtach" rtorrentd
+			newconfd "${FILESDIR}/rtorrentd.conf.dtach" rtorrentd
+			exeinto /usr/bin
+			doexe "${FILESDIR}/rtorrent-attach"
+		else
+			newinitd "${FILESDIR}/rtorrentd.init" rtorrentd
+			newconfd "${FILESDIR}/rtorrentd.conf" rtorrentd
+		fi
 	fi
 }
 
 pkg_postinst() {
-	if use screen || use dtach; then
+	if use daemon; then
 		enewgroup p2p
 		enewuser p2p -1 -1 /home/p2p p2p
 		elog "Now you must create .rtorrent.rc in /home/p2p"
 		elog "It is good idea to add session setting into them"
 	fi
-	if use dtach && ! use screen; then
+	if use dtach; then
 		ewarn "Remember, to access daemonized rtorrent via rtorrent-attach you must be in p2p group"
 	fi
 }
