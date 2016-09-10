@@ -6,4 +6,7 @@
 		<name>Stas Cymbalov</name>
 		<description>Overlay maintainer</description>
 	</maintainer>
+	<upstream>
+		<remote-id type="github">rpm-software-management/rpmlint</remote-id>
+	</upstream>
 </pkgmetadata>

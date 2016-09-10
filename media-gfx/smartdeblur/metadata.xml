@@ -6,4 +6,7 @@
 		<name>Stas Cymbalov</name>
 		<description>Overlay maintainer</description>
 	</maintainer>
+	<upstream>
+		<remote-id type="github">Y-Vladimir/SmartDeblur</remote-id>
+	</upstream>
 </pkgmetadata>

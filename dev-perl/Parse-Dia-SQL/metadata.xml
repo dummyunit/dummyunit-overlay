@@ -6,4 +6,25 @@
 		<name>Stas Cymbalov</name>
 		<description>Overlay maintainer</description>
 	</maintainer>
+	<upstream>
+		<remote-id type="cpan">Parse-Dia-SQL</remote-id>
+		<remote-id type="cpan-module">Parse::Dia::SQL</remote-id>
+		<remote-id type="cpan-module">Parse::Dia::SQL::Const</remote-id>
+		<remote-id type="cpan-module">Parse::Dia::SQL::Logger</remote-id>
+		<remote-id type="cpan-module">Parse::Dia::SQL::Output</remote-id>
+		<remote-id type="cpan-module">Parse::Dia::SQL::Output::DB2</remote-id>
+		<remote-id type="cpan-module">Parse::Dia::SQL::Output::HTML</remote-id>
+		<remote-id type="cpan-module">Parse::Dia::SQL::Output::Informix</remote-id>
+		<remote-id type="cpan-module">Parse::Dia::SQL::Output::Ingres</remote-id>
+		<remote-id type="cpan-module">Parse::Dia::SQL::Output::MySQL</remote-id>
+		<remote-id type="cpan-module">Parse::Dia::SQL::Output::MySQL::InnoDB</remote-id>
+		<remote-id type="cpan-module">Parse::Dia::SQL::Output::MySQL::MyISAM</remote-id>
+		<remote-id type="cpan-module">Parse::Dia::SQL::Output::Oracle</remote-id>
+		<remote-id type="cpan-module">Parse::Dia::SQL::Output::Postgres</remote-id>
+		<remote-id type="cpan-module">Parse::Dia::SQL::Output::SQLite3</remote-id>
+		<remote-id type="cpan-module">Parse::Dia::SQL::Output::SQLite3fk</remote-id>
+		<remote-id type="cpan-module">Parse::Dia::SQL::Output::Sas</remote-id>
+		<remote-id type="cpan-module">Parse::Dia::SQL::Output::Sybase</remote-id>
+		<remote-id type="cpan-module">Parse::Dia::SQL::Utils</remote-id>
+	</upstream>
 </pkgmetadata>
