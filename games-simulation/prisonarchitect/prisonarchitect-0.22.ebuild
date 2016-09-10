@@ -4,7 +4,7 @@
 
 EAPI=5
 
-inherit games
+inherit eutils
 
 MY_PV="${PV/#0./alpha}"
 MY_P="${PN}-${MY_PV}-linux"
@@ -26,7 +26,7 @@ DEPEND=""
 
 S="${WORKDIR}/${MY_P}"
 
-INSTALL_DIR="${GAMES_PREFIX_OPT}/${PN}"
+INSTALL_DIR="/opt/${PN}"
 QA_PREBUILT="${INSTALL_DIR}/PrisonArchitect.*"
 
 pkg_nofetch() {
@@ -45,6 +45,5 @@ src_install() {
 	use x86   && doexe PrisonArchitect.i686
 	doexe PrisonArchitect
 
-	games_make_wrapper "${PN}" "${INSTALL_DIR}/PrisonArchitect"
-	prepgamesdirs
+	make_wrapper "${PN}" "${INSTALL_DIR}/PrisonArchitect"
 }
