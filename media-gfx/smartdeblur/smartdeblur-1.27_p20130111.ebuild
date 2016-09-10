@@ -1,17 +1,16 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI=4
+EAPI=6
 
 inherit cmake-utils vcs-snapshot
 
-MY_PN="SmartDeblur"
 EGIT_COMMIT="931b50a9c762338b2695a2bcb65867f6228bb544"
 
 DESCRIPTION="SmartDeblur is a tool for restoring defocused and blurred images"
-HOMEPAGE="https://github.com/Y-Vladimir/${MY_PN}/"
-SRC_URI="https://github.com/Y-Vladimir/${MY_PN}/tarball/${EGIT_COMMIT} -> ${P}.tar.gz"
+HOMEPAGE="https://github.com/Y-Vladimir/SmartDeblur/"
+SRC_URI="https://github.com/Y-Vladimir/SmartDeblur/tarball/${EGIT_COMMIT} -> ${P}.tar.gz"
 
 LICENSE="GPL-3"
 SLOT="0"
