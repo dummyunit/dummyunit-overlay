@@ -1,4 +1,4 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
@@ -6,7 +6,8 @@ EAPI=5
 
 inherit games
 
-MY_P="${PN}-alpha${PV}-linux"
+MY_PV="${PV/#0./alpha}"
+MY_P="${PN}-${MY_PV}-linux"
 
 DESCRIPTION="A prison construction and management simulation game"
 HOMEPAGE="http://www.introversion.co.uk/prisonarchitect"
