@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI="4"
+EAPI="5"
 
 inherit games multilib unpacker-nixstaller
 
@@ -15,7 +15,6 @@ SLOT="0"
 LICENSE="as-is"
 KEYWORDS="-* ~amd64 ~x86"
 RESTRICT="fetch"
-IUSE=""
 
 SRC_URI="Torchlight-${TIMESTAMP}.sh"
 
@@ -60,6 +59,11 @@ DEPEND="${RDEPEND}"
 
 S="${WORKDIR}"
 MY_PN="Torchlight"
+
+QA_PRESTRIPPED="
+opt/torchlight/lib64/*
+opt/torchlight/lib/*
+"
 
 pkg_nofetch() {
 	ewarn
