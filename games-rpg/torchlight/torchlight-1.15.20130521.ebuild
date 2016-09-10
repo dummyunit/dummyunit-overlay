@@ -18,41 +18,24 @@ RESTRICT="fetch"
 
 SRC_URI="Torchlight-${TIMESTAMP}.sh"
 
-RDEPEND="app-arch/bzip2
-	app-arch/xz-utils
+RDEPEND="app-arch/xz-utils
 	dev-libs/expat
 	dev-libs/zziplib
 	media-libs/fontconfig
+	media-libs/freeglut
 	media-libs/freeimage
 	media-libs/freetype
-	media-libs/ilmbase
-	media-libs/lcms
-	virtual/jpeg
-	media-libs/libpng
-	media-libs/libraw
-	media-libs/openexr
-	media-libs/openjpeg
-	media-libs/tiff
-	sys-apps/util-linux
 	sys-libs/zlib
-	x11-libs/libdrm
+	virtual/glu
+	virtual/opengl
 	x11-libs/libICE
 	x11-libs/libSM
 	x11-libs/libX11
-	x11-libs/libXau
 	x11-libs/libXaw
-	x11-libs/libxcb
-	x11-libs/libXdamage
-	x11-libs/libXdmcp
 	x11-libs/libXext
-	x11-libs/libXfixes
 	x11-libs/libXft
-	x11-libs/libXi
 	x11-libs/libXinerama
-	x11-libs/libXmu
-	x11-libs/libXpm
 	x11-libs/libXrandr
-	x11-libs/libXrender
 	x11-libs/libXt
 	x11-libs/libXxf86vm"
 DEPEND="${RDEPEND}"
