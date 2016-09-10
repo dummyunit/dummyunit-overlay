@@ -1,10 +1,10 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
 EAPI="5"
 
-inherit games multilib unpacker-nixstaller
+inherit eutils multilib unpacker-nixstaller
 
 TIMESTAMP="2013-05-21"
 
@@ -71,7 +71,7 @@ src_unpack() {
 }
 
 src_install() {
-	local dir="${GAMES_PREFIX_OPT}/${PN}"
+	local dir="/opt/${PN}"
 
 	insinto "${dir}"
 	doins -r icons music logo.bmp pak.zip resources.cfg "$(get_libdir)"
@@ -87,10 +87,9 @@ src_install() {
 
 	doexe "${exe}"
 
-	games_make_wrapper "${PN}" "./${exe}" "${dir}" "${dir}/$(get_libdir)"
+	make_wrapper "${PN}" "./${exe}" "${dir}" "${dir}/$(get_libdir)"
 	doicon "${MY_PN}.png" || die
 	make_desktop_entry "${PN}" "${MY_PN}" "${MY_PN}"
 
 	dodoc README.linux
-	prepgamesdirs
 }
