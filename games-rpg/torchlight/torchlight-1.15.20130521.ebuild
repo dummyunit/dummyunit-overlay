@@ -12,7 +12,7 @@ DESCRIPTION="An action role-playing game, made by the creators of Diablo"
 HOMEPAGE="http://torchlightgame.com/"
 
 SLOT="0"
-LICENSE="as-is"
+LICENSE="all-rights-reserved"
 KEYWORDS="-* ~amd64 ~x86"
 RESTRICT="fetch"
 
