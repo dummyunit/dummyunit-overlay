@@ -1,0 +1,60 @@
+all: fbuild fbuildworker
+tests: coretest fbuildtest
+
+LIBS += -lpthread -lrt -ldl
+
+lz4_dir = $(dir $(wildcard ../External/LZ4/*/lz4.h))
+
+Core_OBJS = $(patsubst %.cpp,%.o, $(patsubst %.c,%.o, \
+	$(filter-out Core/CoreTest%, \
+		$(wildcard Core/*/*.cpp) \
+		$(wildcard Core/*/*/*.cpp) \
+	) \
+	$(lz4_dir)lz4.c \
+	$(lz4_dir)xxhash.c \
+))
+CoreTest_OBJS = $(patsubst %.cpp,%.o, \
+	$(wildcard Core/CoreTest/*.cpp) \
+	$(wildcard Core/CoreTest/*/*.cpp) \
+)
+TestFramework_OBJS = $(patsubst %.cpp,%.o, \
+	$(wildcard TestFramework/*.cpp) \
+)
+OSUI_OBJS = $(patsubst %.cpp,%.o, \
+	$(wildcard OSUI/*.cpp) \
+)
+FBuildCore_OBJS = $(patsubst %.cpp,%.o, \
+	$(wildcard Tools/FBuild/FBuildCore/*.cpp) \
+	$(wildcard Tools/FBuild/FBuildCore/*/*.cpp) \
+	$(wildcard Tools/FBuild/FBuildCore/*/*/*.cpp) \
+)
+FBuildApp_OBJS = $(patsubst %.cpp,%.o, \
+	$(wildcard Tools/FBuild/FBuildApp/*.cpp) \
+)
+FBuildWorker_OBJS = $(patsubst %.cpp,%.o, \
+	$(wildcard Tools/FBuild/FBuildWorker/*.cpp) \
+	$(wildcard Tools/FBuild/FBuildWorker/*/*.cpp) \
+)
+FBuildTest_OBJS = $(patsubst %.cpp,%.o, \
+	$(wildcard Tools/FBuild/FBuildTest/*.cpp) \
+	$(wildcard Tools/FBuild/FBuildTest/Tests/*.cpp) \
+)
+
+%.o : %.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) -D__LINUX__ -DRELEASE -I./ -I$(lz4_dir) -c -o $@ $<
+%.o : %.cpp
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -D__LINUX__ -DRELEASE -I./ -I$(lz4_dir) -std=c++11 -c -o $@ $<
+
+coretest: $(Core_OBJS) $(TestFramework_OBJS) $(CoreTest_OBJS)
+	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS)
+fbuild: $(Core_OBJS) $(FBuildCore_OBJS) $(FBuildApp_OBJS)
+	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS)
+fbuildworker: $(Core_OBJS) $(OSUI_OBJS) $(FBuildCore_OBJS) $(FBuildWorker_OBJS)
+	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS)
+fbuildtest: $(Core_OBJS) $(TestFramework_OBJS) $(FBuildCore_OBJS) $(FBuildTest_OBJS)
+	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS)
+
+clean:
+	@-rm -- $(Core_OBJS) $(CoreTest_OBJS) $(TestFramework_OBJS) $(OSUI_OBJS) $(FBuildCore_OBJS) $(FBuildApp_OBJS) $(FBuildWorker_OBJS) $(FBuildTest_OBJS) 2>/dev/null
+
+.PHONY: all tests clean

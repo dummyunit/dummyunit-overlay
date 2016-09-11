@@ -1,0 +1,24 @@
+From 0708cfbd93a3d8e275bdf2aacf847cedfeab1454 Mon Sep 17 00:00:00 2001
+From: Stas Cymbalov <dummyunit@gmail.com>
+Date: Sun, 3 Jul 2016 14:48:03 +0300
+Subject: [PATCH] Add missing header for memset
+
+---
+ Code/Core/Network/Network.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Code/Core/Network/Network.cpp b/Code/Core/Network/Network.cpp
+index 8e8b618..8e99820 100644
+--- a/Code/Core/Network/Network.cpp
++++ b/Code/Core/Network/Network.cpp
+@@ -21,6 +21,7 @@
+ #if defined( __LINUX__ ) || defined( __APPLE__ )
+     #include <arpa/inet.h>
+     #include <netdb.h>
++    #include <string.h>
+     #include <unistd.h>
+ #endif
+ 
+-- 
+2.7.3
+
