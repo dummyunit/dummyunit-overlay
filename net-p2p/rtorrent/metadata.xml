@@ -6,10 +6,6 @@
 		<name>Stas Cymbalov</name>
 		<description>Overlay maintainer</description>
 	</maintainer>
-	<maintainer type="person">
-		<email>perfinion@gentoo.org</email>
-		<name>Jason Zaman</name>
-	</maintainer>
 
 	<longdescription lang="en">
 		Console BitTorrent client using ncurses based on libtorrent written in C++.
@@ -21,6 +17,10 @@
 	</use>
 
 	<upstream>
+		<maintainer status="active">
+			<email>perfinion@gentoo.org</email>
+			<name>Jason Zaman</name>
+		</maintainer>
 		<remote-id type="github">rakshasa/rtorrent</remote-id>
 	</upstream>
 </pkgmetadata>

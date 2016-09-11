@@ -6,14 +6,14 @@
 		<name>Stas Cymbalov</name>
 		<description>Overlay maintainer</description>
 	</maintainer>
-	<maintainer type="person">
-		<email>ssuominen@gentoo.org</email>
-	</maintainer>
-	<maintainer type="project">
-		<email>base-system@gentoo.org</email>
-		<name>Gentoo Base System</name>
-	</maintainer>
 	<upstream>
+		<maintainer status="active">
+			<email>ssuominen@gentoo.org</email>
+		</maintainer>
+		<maintainer status="active">
+			<email>base-system@gentoo.org</email>
+			<name>Gentoo Base System</name>
+		</maintainer>
 		<remote-id type="sourceforge">gsmartcontrol</remote-id>
 	</upstream>
 </pkgmetadata>

@@ -6,14 +6,6 @@
 		<name>Stas Cymbalov</name>
 		<description>Overlay maintainer</description>
 	</maintainer>
-	<maintainer>
-		<email>x11@gentoo.org</email>
-		<description>Assign to herd.</description>
-	</maintainer>
-	<maintainer>
-		<email>jekarlson@gmail.com</email>
-		<description>Proxy maintainer, CC him on bugs.</description>
-	</maintainer>
 	<use>
 		<flag name='qt4'>
 			Install qt4 dependent optional tools (e.g Catalyst Control Panel)
@@ -21,4 +13,14 @@
 		<flag name='modules'>Build the kernel modules</flag>
 		<flag name='pax_kernel'>Enable pax kernel specific patches</flag>
 	</use>
+	<upstream>
+		<maintainer status="active">
+			<email>x11@gentoo.org</email>
+			<description>Assign to herd.</description>
+		</maintainer>
+		<maintainer status="active">
+			<email>jekarlson@gmail.com</email>
+			<description>Proxy maintainer, CC him on bugs.</description>
+		</maintainer>
+	</upstream>
 </pkgmetadata>
