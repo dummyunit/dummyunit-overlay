@@ -1,10 +1,10 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
 EAPI=4
 
-inherit games
+inherit eutils
 
 DESCRIPTION="Cogs gives the player mechanical structures that need to be fixed in order to function properly"
 HOMEPAGE="http://www.cogsgame.com/"
@@ -29,7 +29,7 @@ pkg_nofetch() {
 }
 
 src_install() {
-	local dir="${GAMES_PREFIX_OPT}/${PN}"
+	local dir="/opt/${PN}"
 
 	insinto "${dir}"
 	doins -r data
@@ -43,10 +43,9 @@ src_install() {
 	fi
 	doexe "${exe}"
 
-	games_make_wrapper "${PN}" "./${exe}" "${dir}"
+	make_wrapper "${PN}" "./${exe}" "${dir}"
 	doicon "${PN}.png" || die
 	make_desktop_entry "${PN}" "Cogs" "${PN}"
 
 	dodoc README-linux.txt
-	prepgamesdirs
 }
