@@ -7,20 +7,11 @@
 		<description>Overlay maintainer</description>
 	</maintainer>
 	<use>
-		<flag name='qt4'>
+		<flag name="qt4">
 			Install qt4 dependent optional tools (e.g Catalyst Control Panel)
 		</flag>
-		<flag name='modules'>Build the kernel modules</flag>
-		<flag name='pax_kernel'>Enable pax kernel specific patches</flag>
+		<flag name="modules">Build the kernel modules</flag>
+		<flag name="gdm-hack">Do a potentially dangerous binary search and replace to fix gdm compatibility</flag>
+		<flag name="pax_kernel">Enable pax kernel specific patches</flag>
 	</use>
-	<upstream>
-		<maintainer status="active">
-			<email>x11@gentoo.org</email>
-			<description>Assign to herd.</description>
-		</maintainer>
-		<maintainer status="active">
-			<email>jekarlson@gmail.com</email>
-			<description>Proxy maintainer, CC him on bugs.</description>
-		</maintainer>
-	</upstream>
 </pkgmetadata>
