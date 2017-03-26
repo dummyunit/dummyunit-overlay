@@ -3,7 +3,7 @@ tests: coretest fbuildtest
 
 LIBS += -lpthread -lrt -ldl
 
-lz4_dir = $(dir $(wildcard ../External/LZ4/*/lz4.h))
+lz4_dir = $(dir $(firstword $(wildcard ../External/LZ4/*/lz4.h ../External/LZ4/*/lib/lz4.h)))
 
 Core_OBJS = $(patsubst %.cpp,%.o, $(patsubst %.c,%.o, \
 	$(filter-out Core/CoreTest%, \
