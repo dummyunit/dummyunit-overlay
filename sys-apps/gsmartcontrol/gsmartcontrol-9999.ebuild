@@ -1,4 +1,4 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=4
@@ -22,7 +22,7 @@ LICENSE="|| ( GPL-2 GPL-3 ) Boost-1.0 BSD Unlicense ZLIB"
 SLOT="0"
 IUSE="test"
 
-COMMON_DEPEND="dev-cpp/gtkmm:2.4
+COMMON_DEPEND="dev-cpp/gtkmm:3.0
 	dev-libs/libpcre
 	sys-apps/smartmontools"
 RDEPEND="${COMMON_DEPEND}
@@ -30,9 +30,6 @@ RDEPEND="${COMMON_DEPEND}
 DEPEND="${COMMON_DEPEND}
 	virtual/pkgconfig
 	test? ( dev-util/gtk-builder-convert )"
-if [[ ${PV} == "9999" ]]; then
-	DEPEND+=" || ( dev-util/gtk-builder-convert dev-cpp/libglademm:2.4 )"
-fi
 
 DOCS="TODO" # See 'dist_doc_DATA' value in Makefile.am
 
