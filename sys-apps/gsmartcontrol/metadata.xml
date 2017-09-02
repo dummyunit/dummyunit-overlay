@@ -8,9 +8,6 @@
 	</maintainer>
 	<upstream>
 		<maintainer status="active">
-			<email>ssuominen@gentoo.org</email>
-		</maintainer>
-		<maintainer status="active">
 			<email>base-system@gentoo.org</email>
 			<name>Gentoo Base System</name>
 		</maintainer>
