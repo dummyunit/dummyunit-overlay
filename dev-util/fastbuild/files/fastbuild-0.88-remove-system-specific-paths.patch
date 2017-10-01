@@ -1,0 +1,27 @@
+From 5346a2e8a857d09b5ef3a7bf9987304061074a79 Mon Sep 17 00:00:00 2001
+From: Stas Cymbalov <dummyunit@gmail.com>
+Date: Sun, 1 Oct 2017 05:11:25 +0300
+Subject: [PATCH] Remove system specific paths
+
+---
+ Code/Tools/FBuild/FBuildTest/Data/testcommon.bff | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/Code/Tools/FBuild/FBuildTest/Data/testcommon.bff b/Code/Tools/FBuild/FBuildTest/Data/testcommon.bff
+index 6434e35..36d183f 100644
+--- a/Code/Tools/FBuild/FBuildTest/Data/testcommon.bff
++++ b/Code/Tools/FBuild/FBuildTest/Data/testcommon.bff
+@@ -76,10 +76,6 @@
+     Compiler( 'Compiler-GCC-Dist' )
+     {
+         .Executable     = '/usr/bin/gcc'
+-        .ExtraFiles     = {
+-                            '/usr/bin/as'
+-                            '/usr/lib/gcc/x86_64-linux-gnu/4.9/cc1plus'
+-                          }
+     }
+     .CompilerDist       = 'Compiler-GCC-Dist'
+     .Librarian          = '/usr/bin/ar'
+-- 
+2.13.6
+

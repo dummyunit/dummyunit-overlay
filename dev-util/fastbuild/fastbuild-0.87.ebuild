@@ -1,4 +1,4 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -33,7 +33,9 @@ src_compile() {
 src_test() {
 	emake CC="$(tc-getCC)" CXX="$(tc-getCXX)" tests
 	./coretest || die "CoreTest failed"
-	./fbuildtest || die "FBuildTest failed"
+	pushd Tools/FBuild/FBuildTest > /dev/null || die
+	../../../fbuildtest || die "FBuildTest failed"
+	popd > /dev/null || die
 }
 
 src_install() {

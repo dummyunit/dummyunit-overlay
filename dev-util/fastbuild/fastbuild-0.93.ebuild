@@ -34,9 +34,16 @@ src_compile() {
 }
 
 src_test() {
+	eapply -p2 "${FILESDIR}/${PN}-0.88-remove-system-specific-paths.patch"
+	# Disable tests that fail under sandbox
+	sed -i -e '/REGISTER_TEST.*CreateAccessDestroy/d' Core/CoreTest/Tests/TestSharedMemory.cpp || die
+	sed -i -e '/REGISTER_TESTGROUP.*TestDistributed/d' Tools/FBuild/FBuildTest/TestMain.cpp || die
+
 	emake CC="$(tc-getCC)" CXX="$(tc-getCXX)" tests
 	./coretest || die "CoreTest failed"
-	./fbuildtest || die "FBuildTest failed"
+	pushd Tools/FBuild/FBuildTest > /dev/null || die
+	../../../fbuildtest || die "FBuildTest failed"
+	popd > /dev/null || die
 }
 
 src_install() {
