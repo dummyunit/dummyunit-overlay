@@ -11,7 +11,7 @@ SRC_URI="http://rtorrent.net/downloads/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="amd64 ~arm hppa ~ia64 ppc ppc64 ~sparc x86 ~x86-fbsd ~amd64-linux ~arm-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris ~x64-solaris"
+KEYWORDS="amd64 ~arm ~hppa ~ia64 ppc ppc64 sparc x86 ~x86-fbsd ~amd64-linux ~arm-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris ~x64-solaris"
 IUSE="daemon dtach debug ipv6 selinux test xmlrpc"
 
 COMMON_DEPEND="~net-libs/libtorrent-0.13.${PV##*.}
@@ -33,7 +33,8 @@ src_prepare() {
 	# bug #358271
 	epatch \
 		"${FILESDIR}"/${PN}-0.9.1-ncurses.patch \
-		"${FILESDIR}"/${PN}-0.9.4-tinfo.patch
+		"${FILESDIR}"/${PN}-0.9.4-tinfo.patch \
+		"${FILESDIR}"/${PN}-0.9.6-cppunit-pkgconfig.patch
 
 	# https://github.com/rakshasa/rtorrent/issues/332
 	cp "${FILESDIR}"/rtorrent.1 "${S}"/doc/ || die
