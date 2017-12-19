@@ -18,10 +18,12 @@ LICENSE="Apache-2.0"
 SLOT="0"
 IUSE="static-libs test"
 
-DEPEND=""
-RDEPEND="${DEPEND}"
+DEPEND="
+	test? ( dev-cpp/gtest )
+"
+RDEPEND=""
 
-PATCHES=( "${FILESDIR}/${PN}-1.2.0-install-dirs.patch" )
+PATCHES=( "${FILESDIR}/${PN}-1.4.0-install-dirs.patch" )
 
 multilib_src_configure() {
 	local mycmakeargs=(
