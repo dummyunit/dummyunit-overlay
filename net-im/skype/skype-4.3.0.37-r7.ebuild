@@ -1,4 +1,4 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -36,6 +36,7 @@ RDEPEND="
 
 src_prepare() {
 	epatch "${FILESDIR}/${P}-desktop.patch"
+	sed -i 's/4\.3\.0\.37/8\.3\.0\.37/' skype || die "Failed to replace version string in the binary"
 }
 
 src_compile() {
