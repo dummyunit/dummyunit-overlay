@@ -1,0 +1,44 @@
+From 05ea5ab5266df99ea71350bc23422105c299bc3d Mon Sep 17 00:00:00 2001
+From: Stas Cymbalov <dummyunit@gmail.com>
+Date: Sat, 7 Jul 2018 16:36:43 +0300
+Subject: [PATCH] Remove system specific paths
+
+---
+ Code/Tools/FBuild/FBuildTest/Data/testcommon.bff | 4 ----
+ Code/fbuild.bff                                  | 5 -----
+ 2 files changed, 9 deletions(-)
+
+diff --git a/Code/Tools/FBuild/FBuildTest/Data/testcommon.bff b/Code/Tools/FBuild/FBuildTest/Data/testcommon.bff
+index cc14f16..81b2809 100644
+--- a/Code/Tools/FBuild/FBuildTest/Data/testcommon.bff
++++ b/Code/Tools/FBuild/FBuildTest/Data/testcommon.bff
+@@ -58,10 +58,6 @@
+     Compiler( 'Compiler-GCC-Dist' )
+     {
+         .Executable     = '/usr/bin/gcc'
+-        .ExtraFiles     = {
+-                            '/usr/bin/as'
+-                            '/usr/lib/gcc/x86_64-linux-gnu/4.9/cc1plus'
+-                          }
+     }
+     .CompilerDist       = 'Compiler-GCC-Dist'
+     .Librarian          = '/usr/bin/ar'
+diff --git a/Code/fbuild.bff b/Code/fbuild.bff
+index bee2a8b..0377cf7 100644
+--- a/Code/fbuild.bff
++++ b/Code/fbuild.bff
+@@ -39,11 +39,6 @@ Compiler( 'Compiler-x64Clang' )
+ Compiler( 'Compiler-x64-Linux' )
+ {
+     .Executable     = '/usr/bin/gcc'
+-    .ExtraFiles     = {
+-                        '/usr/bin/as'
+-                        '/usr/lib/gcc/x86_64-linux-gnu/4.9/cc1'
+-                        '/usr/lib/gcc/x86_64-linux-gnu/4.9/cc1plus'
+-                      }
+ }
+ Compiler( 'Compiler-x64Clang-LinuxOSX' )
+ {
+-- 
+2.16.4
+
