@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -16,7 +16,7 @@ IUSE="${IUSE_SERVERS} glamor ipv6 libressl minimal nptl selinux +suid systemd ts
 
 CDEPEND=">=app-eselect/eselect-opengl-1.3.0
 	!libressl? ( dev-libs/openssl:0= )
-	libressl? ( dev-libs/libressl )
+	libressl? ( dev-libs/libressl:0= )
 	>=x11-apps/iceauth-1.0.2
 	>=x11-apps/rgb-1.0.3
 	>=x11-apps/xauth-1.0.3
@@ -71,7 +71,7 @@ CDEPEND=">=app-eselect/eselect-opengl-1.3.0
 		>=media-libs/mesa-10.3.4-r1[nptl=]
 	)
 	tslib? ( >=x11-libs/tslib-1.0 )
-	udev? ( >=virtual/udev-150 )
+	udev? ( virtual/libudev:= )
 	unwind? ( sys-libs/libunwind )
 	wayland? (
 		>=dev-libs/wayland-1.3.0
@@ -85,32 +85,8 @@ CDEPEND=">=app-eselect/eselect-opengl-1.3.0
 
 DEPEND="${CDEPEND}
 	sys-devel/flex
-	>=x11-proto/bigreqsproto-1.1.0
-	>=x11-proto/compositeproto-0.4
-	>=x11-proto/damageproto-1.1
-	>=x11-proto/fixesproto-5.0
-	>=x11-proto/fontsproto-2.1.3
-	>=x11-proto/glproto-1.4.17-r1
-	>=x11-proto/inputproto-2.2.99.1
-	>=x11-proto/kbproto-1.0.3
-	>=x11-proto/randrproto-1.4.0
-	>=x11-proto/recordproto-1.13.99.1
-	>=x11-proto/renderproto-0.11
-	>=x11-proto/resourceproto-1.2.0
-	>=x11-proto/scrnsaverproto-1.1
-	>=x11-proto/trapproto-3.4.3
-	>=x11-proto/videoproto-2.2.2
-	>=x11-proto/xcmiscproto-1.2.0
-	>=x11-proto/xextproto-7.2.99.901
-	>=x11-proto/xf86dgaproto-2.0.99.1
-	>=x11-proto/xf86rushproto-1.1.2
-	>=x11-proto/xf86vidmodeproto-2.2.99.1
-	>=x11-proto/xineramaproto-1.1.3
-	>=x11-proto/xproto-7.0.26
-	>=x11-proto/presentproto-1.0
-	>=x11-proto/dri3proto-1.0
+	x11-base/xorg-proto
 	dmx? (
-		>=x11-proto/dmxproto-2.2.99.1
 		doc? (
 			|| (
 				www-client/links
@@ -118,10 +94,6 @@ DEPEND="${CDEPEND}
 				www-client/w3m
 			)
 		)
-	)
-	!minimal? (
-		>=x11-proto/xf86driproto-2.1.0
-		>=x11-proto/dri2proto-2.8
 	)"
 
 RDEPEND="${CDEPEND}
@@ -159,7 +131,7 @@ src_configure() {
 	# localstatedir is used for the log location; we need to override the default
 	#	from ebuild.sh
 	# sysconfdir is used for the xorg.conf location; same applies
-	# NOTE: fop is used for doc generating ; and i have no idea if gentoo
+	# NOTE: fop is used for doc generating; and I have no idea if Gentoo
 	#	package it somewhere
 	XORG_CONFIGURE_OPTIONS=(
 		$(use_enable ipv6)
@@ -210,7 +182,7 @@ src_install() {
 
 	server_based_install
 
-	if ! use minimal &&	use xorg; then
+	if ! use minimal && use xorg; then
 		# Install xorg.conf.example into docs
 		dodoc "${AUTOTOOLS_BUILD_DIR}"/hw/xfree86/xorg.conf.example
 	fi
