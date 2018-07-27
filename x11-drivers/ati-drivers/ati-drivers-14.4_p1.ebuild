@@ -1,4 +1,4 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -61,10 +61,7 @@ else
 fi
 
 DEPEND="${RDEPEND}
-	x11-proto/inputproto
-	x11-proto/xf86miscproto
-	x11-proto/xf86vidmodeproto
-	x11-proto/xineramaproto
+	x11-base/xorg-proto
 	x11-libs/libXtst
 	sys-apps/findutils
 	app-misc/pax-utils
