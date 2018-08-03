@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -23,7 +23,10 @@ RDEPEND="
 	dev-qt/qtcore:4[abi_x86_32(-)]
 	dev-qt/qtdbus:4[abi_x86_32(-)]
 	dev-qt/qtgui:4[accessibility,abi_x86_32(-)]
-	dev-qt/qtwebkit:4[-exceptions,abi_x86_32(-)]
+	|| (
+		dev-qt/qtwebkit:4[-exceptions,abi_x86_32(-)]
+		>=dev-qt/qtwebkit-4.10.4:4[abi_x86_32(-)]
+	)
 	media-libs/alsa-lib[abi_x86_32(-)]
 	x11-libs/libX11[abi_x86_32(-)]
 	x11-libs/libXext[abi_x86_32(-)]
