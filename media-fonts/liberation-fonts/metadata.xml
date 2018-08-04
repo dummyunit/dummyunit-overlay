@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">
+		<email>dummyunit@gmail.com</email>
+		<name>Stas Cymbalov</name>
+		<description>Overlay maintainer</description>
+	</maintainer>
+	<use>
+		<flag name="fontforge">Use <pkg>media-gfx/fontforge</pkg> to build fonts from source</flag>
+	</use>
+	<longdescription lang="en">
+		A GPL-2 Helvetica/Times/Courier replacement TrueType font set, courtesy of Red Hat
+	</longdescription>
+	<upstream>
+		<maintainer status="active">
+			<email>fonts@gentoo.org</email>
+			<name>Fonts</name>
+		</maintainer>
+	</upstream>
+</pkgmetadata>
