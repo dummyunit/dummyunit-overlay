@@ -21,6 +21,7 @@ LICENSE="ZLIB BSD-2"
 S="${WORKDIR}/${P}"/Code
 PATCHES=(
 	"${FILESDIR}/${PN}-0.88-remove-system-specific-paths.patch"
+	"${FILESDIR}/${PN}-0.92-fix-build.patch"
 )
 
 src_prepare() {

@@ -1,0 +1,35 @@
+From 593ea0eeaeae51c1e2118f1bca2a6936eedeee32 Mon Sep 17 00:00:00 2001
+From: Lambert Clara <lambert.clara@yahoo.fr>
+Date: Tue, 6 Feb 2018 23:08:32 +0100
+Subject: [PATCH] Fix missing include compile error on linux.
+
+The line #include <sys/uio.h> is also needed on linux, otherwise we get:
+error: ‘writev’ was not declared in this scope
+---
+ Code/Core/Network/TCPConnectionPool.cpp | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/Code/Core/Network/TCPConnectionPool.cpp b/Code/Core/Network/TCPConnectionPool.cpp
+index ef3b5768..25d7841b 100644
+--- a/Code/Core/Network/TCPConnectionPool.cpp
++++ b/Code/Core/Network/TCPConnectionPool.cpp
+@@ -27,15 +27,13 @@
+     #include <arpa/inet.h>
+     #include <sys/ioctl.h>
+     #include <sys/socket.h>
++    #include <sys/uio.h>
+     #include <netinet/in.h>
+     #include <netinet/tcp.h>
+     #include <fcntl.h>
+     #include <unistd.h>
+     #define INVALID_SOCKET ( -1 )
+     #define SOCKET_ERROR -1
+-    #if defined( __APPLE__ )
+-        #include <sys/uio.h>
+-    #endif
+ #else
+     #error Unknown platform
+ #endif
+-- 
+2.19.2
+

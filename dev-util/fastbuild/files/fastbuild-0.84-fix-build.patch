@@ -1,0 +1,49 @@
+--- a/Code/Tools/FBuild/FBuildCore/BFF/Functions/FunctionSLN.cpp
++++ b/Code/Tools/FBuild/FBuildCore/BFF/Functions/FunctionSLN.cpp
+@@ -238,7 +238,7 @@
+                 const AString * const end2 = newFolder.m_ProjectNames.End();
+                 for ( const AString * it2 = newFolder.m_ProjectNames.Begin() ; it2 != end2 ; ++it2 )
+                 {
+-                    if ( solutionProjects.Find( *it2 ) == false )
++                    if ( solutionProjects.Find( *it2 ) == nullptr )
+                     {
+                         // TODO:B custom error
+                         Error::Error_1104_TargetNotDefined( funcStartIter, this, ".Projects", *it2 );
+@@ -348,7 +348,7 @@
+                     return false;
+                 }
+ 
+-                if ( projects.Find( project ) == false )
++                if ( projects.Find( project ) == nullptr )
+                 {
+                     // project referenced in a solution folder is not referenced in .SolutionProjects
+                     Error::Error_1104_TargetNotDefined( funcStartIter, this, ".SolutionProjects", project->GetName() );
+@@ -380,7 +380,7 @@
+             return false;
+         }
+ 
+-        if ( projects.Find( project ) == false )
++        if ( projects.Find( project ) == nullptr )
+         {
+             // project referenced in .SolutionBuildProject is not referenced in .SolutionProjects
+             Error::Error_1104_TargetNotDefined( funcStartIter, this, ".SolutionBuildProject", project->GetName() );
+--- a/Code/Tools/FBuild/FBuildCore/Helpers/SLNGenerator.cpp
++++ b/Code/Tools/FBuild/FBuildCore/Helpers/SLNGenerator.cpp
+@@ -209,7 +209,7 @@
+     const SLNSolutionFolder * const foldersEnd = folders.End();
+     for( const SLNSolutionFolder * it = folders.Begin() ; it != foldersEnd ; ++it )
+     {
+-        if ( solutionFolderPaths.Find( it->m_Path ) == false )
++        if ( solutionFolderPaths.Find( it->m_Path ) == nullptr )
+         {
+             solutionFolderPaths.Append( it->m_Path );
+         }
+@@ -218,7 +218,7 @@
+         while ( pathEnd )
+         {
+             AStackString<> solutionFolderPath( it->m_Path.Get(), pathEnd );
+-            if ( solutionFolderPaths.Find( solutionFolderPath ) == false )
++            if ( solutionFolderPaths.Find( solutionFolderPath ) == nullptr )
+             {
+                 solutionFolderPaths.Append( solutionFolderPath );
+             }

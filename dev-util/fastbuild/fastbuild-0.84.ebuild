@@ -19,6 +19,9 @@ SLOT="0"
 LICENSE="ZLIB BSD-2"
 
 S="${WORKDIR}/${P}"/Code
+PATCHES=(
+	"${FILESDIR}/${PN}-0.84-fix-build.patch"
+)
 
 src_prepare() {
 	# Apply patches on top of the repo/tarball root.
