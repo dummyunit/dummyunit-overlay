@@ -18,6 +18,9 @@ HOMEPAGE="http://fastbuild.org/"
 SLOT="0"
 LICENSE="ZLIB BSD-2"
 
+DEPEND="app-arch/lz4:="
+RDEPEND="${DEPEND}"
+
 S="${WORKDIR}/${P}"/Code
 
 src_prepare() {

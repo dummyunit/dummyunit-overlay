@@ -1,17 +1,14 @@
 all: fbuild fbuildworker
 tests: coretest fbuildtest
 
-LIBS += -lpthread -lrt -ldl
-
-lz4_dir = $(dir $(firstword $(wildcard ../External/LZ4/*/lz4.h ../External/LZ4/*/lib/lz4.h)))
+extra_cflags := -I./ -DRELEASE -D__LINUX__ $(shell pkg-config --cflags liblz4)
+extra_libs := -lpthread -lrt -ldl $(shell pkg-config --libs liblz4)
 
 Core_OBJS = $(patsubst %.cpp,%.o, $(patsubst %.c,%.o, \
 	$(filter-out Core/CoreTest%, \
 		$(wildcard Core/*/*.cpp) \
 		$(wildcard Core/*/*/*.cpp) \
 	) \
-	$(lz4_dir)lz4.c \
-	$(lz4_dir)xxhash.c \
 ))
 CoreTest_OBJS = $(patsubst %.cpp,%.o, \
 	$(wildcard Core/CoreTest/*.cpp) \
@@ -41,18 +38,18 @@ FBuildTest_OBJS = $(patsubst %.cpp,%.o, \
 )
 
 %.o : %.c
-	$(CC) $(CPPFLAGS) $(CFLAGS) -D__LINUX__ -DRELEASE -I./ -I$(lz4_dir) -c -o $@ $<
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(extra_cflags) -c -o $@ $<
 %.o : %.cpp
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -D__LINUX__ -DRELEASE -I./ -I$(lz4_dir) -std=c++11 -c -o $@ $<
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(extra_cflags) -std=c++11 -Wno-invalid-offsetof -c -o $@ $<
 
 coretest: $(Core_OBJS) $(TestFramework_OBJS) $(CoreTest_OBJS)
-	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS)
+	$(CXX) $(LDFLAGS) -o $@ $^ $(extra_libs)
 fbuild: $(Core_OBJS) $(FBuildCore_OBJS) $(FBuildApp_OBJS)
-	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS)
+	$(CXX) $(LDFLAGS) -o $@ $^ $(extra_libs)
 fbuildworker: $(Core_OBJS) $(OSUI_OBJS) $(FBuildCore_OBJS) $(FBuildWorker_OBJS)
-	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS)
+	$(CXX) $(LDFLAGS) -o $@ $^ $(extra_libs)
 fbuildtest: $(Core_OBJS) $(TestFramework_OBJS) $(FBuildCore_OBJS) $(FBuildTest_OBJS)
-	$(CXX) $(LDFLAGS) -o $@ $^ $(LIBS)
+	$(CXX) $(LDFLAGS) -o $@ $^ $(extra_libs)
 
 clean:
 	@-rm -- $(Core_OBJS) $(CoreTest_OBJS) $(TestFramework_OBJS) $(OSUI_OBJS) $(FBuildCore_OBJS) $(FBuildApp_OBJS) $(FBuildWorker_OBJS) $(FBuildTest_OBJS) 2>/dev/null
