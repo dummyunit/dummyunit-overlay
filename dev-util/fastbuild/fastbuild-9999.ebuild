@@ -23,7 +23,7 @@ RDEPEND="${DEPEND}"
 
 S="${WORKDIR}/${P}"/Code
 PATCHES=(
-	"${FILESDIR}/${PN}-0.88-remove-system-specific-paths.patch"
+	"${FILESDIR}/${PN}-0.98-remove-system-specific-paths.patch"
 )
 
 src_prepare() {
@@ -45,12 +45,12 @@ src_test() {
 	# Disable tests that fail under sandbox
 	sed -i -e '/REGISTER_TEST.*CreateAccessDestroy/d' Core/CoreTest/Tests/TestSharedMemory.cpp || die
 	sed -i -e '/REGISTER_TESTGROUP.*TestDistributed/d' Tools/FBuild/FBuildTest/TestMain.cpp || die
+	# Disable tests that require clang to run
+	sed -i -e '/All-x64ClangLinux/d' Tools/FBuild/FBuildTest/Tests/TestBuildFBuild.cpp || die
 
 	emake CC="$(tc-getCC)" CXX="$(tc-getCXX)" tests
 	./coretest || die "CoreTest failed"
-	pushd Tools/FBuild/FBuildTest > /dev/null || die
-	../../../fbuildtest || die "FBuildTest failed"
-	popd > /dev/null || die
+	./fbuildtest || die "FBuildTest failed"
 }
 
 src_install() {
