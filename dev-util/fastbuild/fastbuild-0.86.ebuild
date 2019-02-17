@@ -1,10 +1,10 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 inherit toolchain-funcs
 
-if [ "${PV}" = "9999" ]; then
+if [[ ${PV} = *9999 ]]; then
 	EGIT_REPO_URI="https://github.com/fastbuild/fastbuild.git"
 	EGIT_BRANCH="dev"
 	inherit git-r3
@@ -21,9 +21,13 @@ LICENSE="ZLIB BSD-2"
 S="${WORKDIR}/${P}"/Code
 
 src_prepare() {
-	cp "${FILESDIR}"/Makefile-0.82 "${S}"/Makefile || die
-	rm Tools/FBuild/Documentation/favicon.ico || die
+	# Apply patches on top of the repo/tarball root.
+	# This allows users (and us) to use unmodified upstream commits as patches.
+	pushd "${WORKDIR}/${P}" > /dev/null || die
 	default
+	popd > /dev/null || die
+
+	cp "${FILESDIR}"/Makefile-0.82 Makefile || die
 }
 
 src_compile() {
@@ -40,5 +44,6 @@ src_test() {
 
 src_install() {
 	dobin fbuild fbuildworker
-	dodoc -r Tools/FBuild/Documentation/*
+	docinto html
+	dodoc -r Tools/FBuild/Documentation/.
 }
