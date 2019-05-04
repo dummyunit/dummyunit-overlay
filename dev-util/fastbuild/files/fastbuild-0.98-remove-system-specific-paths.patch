@@ -1,39 +1,44 @@
-From 4487928a1d35e59799cf0ffab4736c3776ff60e6 Mon Sep 17 00:00:00 2001
+From 54bbab3f631bc414187a187c24956b7d0ab6705c Mon Sep 17 00:00:00 2001
 From: Stas Cymbalov <dummyunit@gmail.com>
 Date: Sun, 17 Feb 2019 17:14:13 +0300
 Subject: [PATCH] Remove system specific paths
 
 ---
- External/SDK/GCC/Linux/GCC4.bff | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ External/SDK/GCC/Linux/GCC7.bff | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/External/SDK/GCC/Linux/GCC4.bff b/External/SDK/GCC/Linux/GCC4.bff
-index 17119dde..3bb6c445 100644
---- a/External/SDK/GCC/Linux/GCC4.bff
-+++ b/External/SDK/GCC/Linux/GCC4.bff
+diff --git a/External/SDK/GCC/Linux/GCC7.bff b/External/SDK/GCC/Linux/GCC7.bff
+index a39b8f3..8f07de2 100644
+--- a/External/SDK/GCC/Linux/GCC7.bff
++++ b/External/SDK/GCC/Linux/GCC7.bff
 @@ -6,12 +6,7 @@
  //------------------------------------------------------------------------------
- Compiler( 'Compiler-GCC4' )
+ Compiler( 'Compiler-GCC7' )
  {
--    .Executable                     = '/usr/bin/gcc-4.9'
+-    .Executable                     = '$GCC7_BasePath$/x86_64-linux-gnu-g++-7'
 -    .ExtraFiles                     = {
 -                                        '/usr/bin/as'
--                                        '$GCC4_BasePath$/cc1'
--                                        '$GCC4_BasePath$/cc1plus'
+-                                        '/usr/lib/gcc/x86_64-linux-gnu/7/cc1'
+-                                        '/usr/lib/gcc/x86_64-linux-gnu/7/cc1plus'
 -                                      }
 +    .Executable                     = '/usr/bin/g++'
      .CompilerFamily                 = 'gcc' // TODO: Remove when FASTBuild detection is improved
  }
  
-@@ -47,7 +42,7 @@ Compiler( 'Compiler-GCC4' )
+@@ -43,11 +38,11 @@ Compiler( 'Compiler-GCC7' )
+     .CompilerOptionsC               = ' -x c $CommonCompilerOptions$'
+ 
+     // Librarian
+-    .Librarian                      = '$GCC7_BasePath$/x86_64-linux-gnu-ar'
++    .Librarian                      = '/usr/bin/ar'
      .LibrarianOptions               = 'rcs "%2" "%1"'
  
      // Linker
--    .Linker                         = '/usr/bin/g++-4.9'
+-    .Linker                         = '$GCC7_BasePath$/x86_64-linux-gnu-g++-7'
 +    .Linker                         = '/usr/bin/g++'
      .LinkerOptions                  = '"%1" -o "%2"'
  
      // File Extensions
 -- 
-2.19.2
+2.21.0
 
