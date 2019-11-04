@@ -43,7 +43,7 @@ src_compile() {
 
 src_test() {
 	# Disable tests that fail under sandbox
-	sed -i -e '/REGISTER_TEST.*CreateAccessDestroy/d' Core/CoreTest/Tests/TestSharedMemory.cpp || die
+	sed -i -e '/REGISTER_TEST.*ConsistentCacheKeysWithDist/d' Tools/FBuild/FBuildTest/Tests/TestCache.cpp || die
 	sed -i -e '/REGISTER_TESTGROUP.*TestDistributed/d' Tools/FBuild/FBuildTest/TestMain.cpp || die
 	# Disable tests that require clang to run
 	sed -i -e '/All-x64ClangLinux/d' Tools/FBuild/FBuildTest/Tests/TestBuildFBuild.cpp || die
