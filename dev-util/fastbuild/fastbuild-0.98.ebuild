@@ -51,7 +51,8 @@ src_test() {
 
 	emake CC="$(tc-getCC)" CXX="$(tc-getCXX)" tests
 	./coretest || die "CoreTest failed"
-	./fbuildtest || die "FBuildTest failed"
+	# XCode project generation requires "USER" environment variable to work
+	USER= ./fbuildtest || die "FBuildTest failed"
 }
 
 src_install() {
