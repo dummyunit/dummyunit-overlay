@@ -16,7 +16,6 @@ IUSE="daemon dtach debug selinux test xmlrpc"
 RESTRICT="!test? ( test )"
 
 COMMON_DEPEND="~net-libs/libtorrent-0.13.${PV##*.}
-	>=dev-libs/libsigc++-2.2.2:2
 	>=net-misc/curl-7.19.1
 	sys-libs/ncurses:0=
 	xmlrpc? ( dev-libs/xmlrpc-c )"
@@ -29,11 +28,6 @@ DEPEND="${COMMON_DEPEND}
 	virtual/pkgconfig"
 
 DOCS=( doc/rtorrent.rc )
-
-PATCHES=(
-	"${FILESDIR}/${PN}-0.9.7-tinfo.patch"
-	"${FILESDIR}/${PN}-0.9.7-execinfo-configure.patch"
-)
 
 pkg_setup() {
 	if ! linux_config_exists || ! linux_chkconfig_present IPV6; then
