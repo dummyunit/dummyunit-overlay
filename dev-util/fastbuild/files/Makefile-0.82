@@ -26,6 +26,7 @@ FBuildCore_OBJS = $(patsubst %.cpp,%.o, \
 	$(wildcard Tools/FBuild/FBuildCore/*/*/*.cpp) \
 )
 FBuildApp_OBJS = $(patsubst %.cpp,%.o, \
+	$(wildcard Tools/FBuild/FBuild/*.cpp) \
 	$(wildcard Tools/FBuild/FBuildApp/*.cpp) \
 )
 FBuildWorker_OBJS = $(patsubst %.cpp,%.o, \

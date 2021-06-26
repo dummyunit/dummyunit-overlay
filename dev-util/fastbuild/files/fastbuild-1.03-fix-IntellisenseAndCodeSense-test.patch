@@ -1,0 +1,41 @@
+From 3b1b9ce3a56b4929d0fab0e751e2cbaa4c9731c1 Mon Sep 17 00:00:00 2001
+From: Stas Cymbalov <dummyunit@gmail.com>
+Date: Sat, 26 Jun 2021 20:13:14 +0300
+Subject: [PATCH] TestProjectGeneration: Expect quoted paths in
+ IntellisenseAndCodeSense test
+
+This patch fixes the IntellisenseAndCodeSense test in case when the full
+path to the repository checkout contains any character that forces
+XCodeProjectGenerator to write quoted include paths to the .pbxproj file
+(see XCodeProjectGenerator::ShouldQuoteString()).
+
+Previously the test didn't account for possibility of a quoted path and
+the trailing quote was left in paths saved to the includes array.
+---
+ .../FBuild/FBuildTest/Tests/TestProjectGeneration.cpp  | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/Code/Tools/FBuild/FBuildTest/Tests/TestProjectGeneration.cpp b/Code/Tools/FBuild/FBuildTest/Tests/TestProjectGeneration.cpp
+index 263e4e1f..8fec4c27 100644
+--- a/Code/Tools/FBuild/FBuildTest/Tests/TestProjectGeneration.cpp
++++ b/Code/Tools/FBuild/FBuildTest/Tests/TestProjectGeneration.cpp
+@@ -601,7 +601,15 @@ void TestProjectGeneration::XCodeProj_CodeSense_Check( const char * projectFile
+                 // Check that we separated path from the option name correctly.
+                 TEST_ASSERT( ( pathStartPos == token.Get() ) || ( pathStartPos[ -1 ] == '/' ) );
+ 
+-                const char * pathEndPos = token.GetEnd() - ( token.EndsWith( ',' ) ? 1 : 0 );
++                const char * pathEndPos = token.GetEnd();
++                if ( pathEndPos[ -1 ] == ',' )
++                {
++                    --pathEndPos;
++                }
++                if ( pathEndPos[ -1 ] == '"' )
++                {
++                    --pathEndPos;
++                }
+                 includes.EmplaceBack( pathStartPos, pathEndPos );
+             }
+             continue;
+-- 
+2.31.1
+
