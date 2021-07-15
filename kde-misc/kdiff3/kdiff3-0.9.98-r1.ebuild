@@ -1,7 +1,7 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 inherit qmake-utils
 
@@ -12,15 +12,13 @@ SRC_URI="mirror://sourceforge/${PN}/${P}.tar.gz"
 LICENSE="GPL-2"
 SLOT="4"
 KEYWORDS="amd64 x86 ~amd64-linux"
-IUSE="qt5"
+IUSE=""
 
 DEPEND="
-	!qt5? ( dev-qt/qtcore:4
-		dev-qt/qtgui:4 )
-	qt5? ( dev-qt/qtcore:5
-		dev-qt/qtgui:5
-		dev-qt/qtprintsupport:5
-		dev-qt/qtwidgets:5 )
+	dev-qt/qtcore:5
+	dev-qt/qtgui:5
+	dev-qt/qtprintsupport:5
+	dev-qt/qtwidgets:5
 "
 RDEPEND="${DEPEND}
 	sys-apps/diffutils
@@ -36,11 +34,7 @@ src_prepare() {
 }
 
 src_configure() {
-	if ! use qt5; then
-		eqmake4 "${S}"/src-QT4/kdiff3.pro
-	else
-		eqmake5 "${S}"/src-QT4/kdiff3.pro
-	fi
+	eqmake5 "${S}"/src-QT4/kdiff3.pro
 }
 
 src_install() {
