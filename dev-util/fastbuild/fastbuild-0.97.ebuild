@@ -18,7 +18,10 @@ HOMEPAGE="http://fastbuild.org/"
 SLOT="0"
 LICENSE="ZLIB BSD-2"
 
-DEPEND="app-arch/lz4:="
+DEPEND="
+	app-arch/lz4:=
+	dev-libs/xxhash
+"
 RDEPEND="${DEPEND}"
 
 S="${WORKDIR}/${P}"/Code

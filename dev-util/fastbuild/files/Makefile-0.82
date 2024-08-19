@@ -1,8 +1,8 @@
 all: fbuild fbuildworker
 tests: coretest fbuildtest
 
-extra_cflags := -I./ -DRELEASE -D__LINUX__ $(shell pkg-config --cflags liblz4)
-extra_libs := -lpthread -lrt -ldl $(shell pkg-config --libs liblz4)
+extra_cflags := -I./ -DRELEASE -D__LINUX__ $(shell pkg-config --cflags liblz4) $(shell pkg-config --cflags libxxhash)
+extra_libs := -lpthread -lrt -ldl $(shell pkg-config --libs liblz4) $(shell pkg-config --libs libxxhash)
 
 Core_OBJS = $(patsubst %.cpp,%.o, $(patsubst %.c,%.o, \
 	$(filter-out Core/CoreTest%, \
