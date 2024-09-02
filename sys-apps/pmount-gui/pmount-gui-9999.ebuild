@@ -1,24 +1,22 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2024 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=8
 
 EGIT_REPO_URI="git://git.tdb.fi/pmount-gui"
-inherit eutils toolchain-funcs git-r3
+inherit desktop toolchain-funcs git-r3
 
 DESCRIPTION="A simple graphical frontend for pmount"
 HOMEPAGE="http://git.tdb.fi/?p=pmount-gui.git;a=summary"
 
 LICENSE="BSD-2"
 SLOT="0"
-IUSE=""
 
-COMMON_DEPEND="x11-libs/gtk+:2"
-RDEPEND="${COMMON_DEPEND}
+DEPEND="x11-libs/gtk+:2"
+RDEPEND="${DEPEND}
 	sys-apps/pmount
 	virtual/udev"
-DEPEND="${COMMON_DEPEND}
-	virtual/pkgconfig"
+BDEPEND="virtual/pkgconfig"
 
 src_compile() {
 	emake CC="$(tc-getCC) ${CFLAGS} ${LDFLAGS}"
