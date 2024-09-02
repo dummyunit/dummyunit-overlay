@@ -1,7 +1,7 @@
-# Copyright 1999-2021 Gentoo Authors
+# Copyright 1999-2024 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
 inherit font
 
@@ -12,7 +12,7 @@ SRC_URI="!fontforge? ( https://releases.pagure.org/${PN}/${PN}-ttf-${PV}.tar.gz 
 
 KEYWORDS="~alpha ~amd64 ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~amd64-linux ~x86-linux"
 SLOT="0"
-LICENSE="GPL-2-with-exceptions"
+LICENSE="GPL-2-with-font-exception"
 IUSE="fontforge X"
 
 FONT_SUFFIX="ttf"
