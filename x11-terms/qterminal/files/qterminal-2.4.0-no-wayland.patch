@@ -1,0 +1,252 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -25,13 +25,11 @@
+ set(QTERMWIDGET_MINIMUM_VERSION "2.4.0")
+ set(QT_MINIMUM_VERSION "6.6.0")
+ set(QT_MAJOR_VERSION "6")
+-set(SHELLQT_MINIMUM_VERSION "6.0.0")
+ 
+ find_package(Qt6Core ${QT_MINIMUM_VERSION} REQUIRED)
+ find_package(Qt6Gui ${QT_MINIMUM_VERSION} REQUIRED)
+ find_package(Qt6LinguistTools ${QT_MINIMUM_VERSION} REQUIRED)
+ find_package(Qt6Widgets ${QT_MINIMUM_VERSION} REQUIRED)
+-find_package(LayerShellQt ${SHELLQT_MINIMUM_VERSION} REQUIRED)
+ if(UNIX)
+     find_package(Qt6DBus ${QT_MINIMUM_VERSION} REQUIRED)
+     find_package(Qt6 COMPONENTS Core REQUIRED)
+@@ -209,7 +207,6 @@
+     Qt6::Gui
+     Qt6::Widgets
+     qtermwidget6
+-    LayerShellQtInterface
+ )
+ if(QXT_FOUND)
+     target_link_libraries(${EXE_NAME} ${QXT_CORE_LIB} ${QXT_GUI_LIB})
+--- a/src/mainwindow.cpp
++++ b/src/mainwindow.cpp
+@@ -44,9 +44,6 @@
+ #include "qterminalapp.h"
+ #include "dbusaddressable.h"
+ 
+-#include <LayerShellQt/Shell>
+-#include <LayerShellQt/Window>
+-
+ typedef std::function<bool(MainWindow&, QAction *)> checkfn;
+ Q_DECLARE_METATYPE(checkfn)
+ 
+@@ -66,8 +63,7 @@
+       presetsMenu(nullptr),
+       m_config(cfg),
+       m_dropLockButton(nullptr),
+-      m_dropMode(dropMode),
+-      m_layerWindow(nullptr)
++      m_dropMode(dropMode)
+ {
+ #ifdef HAVE_QDBUS
+     registerAdapter<WindowAdaptor, MainWindow>(this);
+@@ -170,27 +166,6 @@
+ 
+ void MainWindow::enableDropMode()
+ {
+-    if (QGuiApplication::platformName() == QStringLiteral("wayland"))
+-    {
+-        winId();
+-        if (QWindow *win = windowHandle())
+-        {
+-            m_layerWindow = LayerShellQt::Window::get(win);
+-            if (m_layerWindow)
+-            {
+-                m_layerWindow->setLayer(LayerShellQt::Window::Layer::LayerOverlay);
+-                m_layerWindow->setKeyboardInteractivity(LayerShellQt::Window::KeyboardInteractivityOnDemand);
+-                LayerShellQt::Window::Anchors anchors = {LayerShellQt::Window::AnchorTop
+-                                                         | LayerShellQt::Window::AnchorBottom
+-                                                         | LayerShellQt::Window::AnchorLeft
+-                                                         | LayerShellQt::Window::AnchorRight};
+-                m_layerWindow->setAnchors(anchors);
+-                m_layerWindow->setScope(QStringLiteral("dropdown_terminal"));
+-                m_layerWindow->setScreenConfiguration(LayerShellQt::Window::ScreenConfiguration::ScreenFromCompositor);
+-            }
+-        }
+-    }
+-
+     setWindowFlags(Qt::Dialog | Qt::WindowStaysOnTopHint | Qt::CustomizeWindowHint);
+ 
+     m_dropLockButton = new QToolButton(this);
+@@ -767,10 +742,6 @@
+ {
+     if (m_dropMode)
+     {
+-        if (m_layerWindow)
+-        {
+-            return; // done in showEvent
+-        }
+         QScreen *appScreen = QGuiApplication::screenAt(QCursor::pos());
+         if(appScreen == nullptr)
+         {
+@@ -881,61 +852,13 @@
+     {
+         if (m_dropMode &&
+             !Properties::Instance()->dropKeepOpen &&
+-            qApp->activeWindow() == nullptr)
+-        {
+-            // On Wayland and with a modal dialog, the dropdown window can be activated by
+-            // clicking inside it and then deactivated by clicking on another window (see below).
+-            if (!m_layerWindow || m_layerWindow->layer() == LayerShellQt::Window::Layer::LayerOverlay)
+-            {
+-                hide();
+-            }
+-        }
++            qApp->activeWindow() == nullptr
++            )
++            hide();
+     }
+-    // A workaround for the modal dialogs of the dropdown window on Wayland.
+-    else if (event->type() == QEvent::WindowBlocked && m_layerWindow && m_dropMode)
+-    {
+-        if (auto dialog = qobject_cast<QDialog*>(qApp->activeModalWidget()))
+-        {
+-            dialog->winId();
+-            if (QWindow *win = dialog->windowHandle())
+-            {
+-                if (LayerShellQt::Window *layershell = LayerShellQt::Window::get(win))
+-                {
+-                    layershell->setLayer(LayerShellQt::Window::Layer::LayerOverlay);
+-                    layershell->setKeyboardInteractivity(LayerShellQt::Window::KeyboardInteractivityOnDemand);
+-                    LayerShellQt::Window::Anchors anchors = {LayerShellQt::Window::AnchorTop};
+-                    layershell->setAnchors(anchors);
+-                    layershell->setScreenConfiguration(LayerShellQt::Window::ScreenConfiguration::ScreenFromCompositor);
+-                    layershell->setScope(QStringLiteral("dialog"));
+-                    // For preventing the dialog from going behind the dropdown window if
+-                    // the latter is clicked, the window is set on the top layer temporarily.
+-                    // It will be set on the overlay layer again when the dialog exits.
+-                    m_layerWindow->setLayer(LayerShellQt::Window::Layer::LayerTop);
+-                }
+-            }
+-        }
+-    }
+-    else if (event->type() == QEvent::WindowUnblocked && m_layerWindow && m_dropMode)
+-    {
+-        // Restore the overlay layer.
+-        m_layerWindow->setLayer(LayerShellQt::Window::Layer::LayerOverlay);
+-    }
+-
+     return QMainWindow::event(event);
+ }
+ 
+-void MainWindow::showEvent(QShowEvent* event)
+-{
+-    if (m_layerWindow && m_dropMode)
+-    {
+-        const QRect desktop = windowHandle()->screen()->availableGeometry();
+-        int hMargin = desktop.width() * (100 - Properties::Instance()->dropWidth) / 200;
+-        int vMargin = desktop.height() * (100 - Properties::Instance()->dropHeight) / 100;
+-        m_layerWindow->setMargins(QMargins(hMargin, 0, hMargin, vMargin));
+-    }
+-    QMainWindow::showEvent(event);
+-}
+-
+ void MainWindow::newTerminalWindow()
+ {
+     TerminalConfig cfg;
+--- a/src/mainwindow.h
++++ b/src/mainwindow.h
+@@ -28,9 +28,6 @@
+ #include "terminalconfig.h"
+ #include "dbusaddressable.h"
+ 
+-namespace LayerShellQt {
+-    class Window;
+-}
+ 
+ class QToolButton;
+ 
+@@ -60,7 +57,6 @@
+ 
+ protected:
+      bool event(QEvent* event) override;
+-     void showEvent(QShowEvent* event) override;
+ 
+ private:
+     QActionGroup *tabPosition, *scrollBarPosition, *keyboardCursorShape;
+@@ -92,7 +88,6 @@
+     void enableDropMode();
+     QToolButton *m_dropLockButton;
+     bool m_dropMode;
+-    LayerShellQt::Window *m_layerWindow;
+     QxtGlobalShortcut m_dropShortcut;
+     void realign();
+     void setDropShortcut(const QKeySequence& dropShortCut);
+--- a/src/propertiesdialog.cpp
++++ b/src/propertiesdialog.cpp
+@@ -31,9 +31,6 @@
+ #include "config.h"
+ #include "qterminalapp.h"
+ 
+-#include <LayerShellQt/Shell>
+-#include <LayerShellQt/Window>
+-
+ void KeySequenceEdit::keyPressEvent(QKeyEvent* event)
+ {
+     // by not allowing multiple shortcuts,
+@@ -720,51 +717,3 @@
+     return QDialog::eventFilter(object, event);
+ }
+ 
+-bool PropertiesDialog::event(QEvent *event)
+-{
+-    // This is needed for showing the font dialog (and, probably, other child dialogs) on the
+-    // overlay layer and in front of the properties dialog under Wayland. See MainWindow::event.
+-    if ((event->type() == QEvent::WindowBlocked || event->type() == QEvent::WindowUnblocked)
+-        && QGuiApplication::platformName() == QStringLiteral("wayland")
+-        && windowHandle())
+-    {
+-        if (auto layershell = LayerShellQt::Window::get(windowHandle()))
+-        {
+-            LayerShellQt::Window::Anchors anchors = {LayerShellQt::Window::AnchorTop};
+-            if (layershell->anchors() == anchors)
+-            {
+-                if (event->type() == QEvent::WindowBlocked
+-                    && layershell->layer() == LayerShellQt::Window::Layer::LayerOverlay)
+-                {
+-                    if (auto dialog = qobject_cast<QDialog*>(qApp->activeModalWidget()))
+-                    {
+-                        dialog->winId();
+-                        if (QWindow *win = dialog->windowHandle())
+-                        {
+-                            if (auto dlgLayershell = LayerShellQt::Window::get(win))
+-                            {
+-                                dlgLayershell->setLayer(LayerShellQt::Window::Layer::LayerOverlay);
+-                                dlgLayershell->setKeyboardInteractivity(LayerShellQt::Window::KeyboardInteractivityOnDemand);
+-                                dlgLayershell->setAnchors(anchors);
+-                                dlgLayershell->setScreenConfiguration(LayerShellQt::Window::ScreenConfiguration::ScreenFromCompositor);
+-                                dlgLayershell->setScope(QStringLiteral("dialog"));
+-                                if (auto fontDialog = qobject_cast<FontDialog*>(dialog))
+-                                {
+-                                    fontDialog->drawBorder();
+-                                }
+-                                layershell->setLayer(LayerShellQt::Window::Layer::LayerTop);
+-                            }
+-                        }
+-                    }
+-                }
+-                else if (event->type() == QEvent::WindowUnblocked
+-                         && layershell->layer() == LayerShellQt::Window::Layer::LayerTop)
+-                {
+-                    layershell->setLayer(LayerShellQt::Window::Layer::LayerOverlay);
+-                }
+-            }
+-        }
+-    }
+-
+-    return QDialog::event(event);
+-}
+--- a/src/propertiesdialog.h
++++ b/src/propertiesdialog.h
+@@ -89,7 +89,6 @@
+     protected:
+         void setupShortcuts();
+         void applyShortcuts();
+-        bool event(QEvent *event) override;
+ };
+ 
+ 

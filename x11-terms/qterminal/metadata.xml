@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pkgmetadata SYSTEM "https://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
-	<maintainer type="project">
-		<email>lxqt@gentoo.org</email>
-		<name>LXQt</name>
+	<maintainer type="person">
+		<email>dummyunit@gmail.com</email>
+		<name>Stas Cymbalov</name>
+		<description>Overlay maintainer</description>
 	</maintainer>
 	<upstream>
 		<remote-id type="github">lxqt/qterminal</remote-id>
+		<maintainer type="project">
+			<email>lxqt@gentoo.org</email>
+			<name>LXQt</name>
+		</maintainer>
 	</upstream>
 </pkgmetadata>
